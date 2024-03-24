@@ -33,8 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="Models\Components_AdminKit.sbc" />
+    <None Include="Data\Components_AdminKit.sbc" />
     <None Include="Models\Cubes\Large\Transporter.mwm" />
     <None Include="Models\Cubes\Large\TransporterJammer.mwm" />
     <None Include="Models\Cubes\Large\TransporterJammer_Cons1.mwm" />
@@ -48,17 +47,17 @@
     <None Include="Models\Cubes\Small\TransporterPadSingle.mwm" />
     <None Include="Models\Cubes\Small\TransporterPadSingle_Cons1.mwm" />
     <None Include="Models\Cubes\Small\TransporterPadSingle_Cons2.mwm" />
-    <None Include="Models\p_subspace.sbc" />
-    <None Include="Models\Transporters_Cubeblocks.sbc" />
+    <None Include="Data\p_subspace.sbc" />
+    <None Include="Data\Transporters_Cubeblocks.sbc" />
     <None Include="Textures\Models\Cubes\psA69D.tmp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\NexusScripts\GateVisuals.cs" />
-    <Compile Include="Data\NexusScripts\NexusAPI.cs" />
-    <Compile Include="Data\NexusScripts\Pad.cs" />
-    <Compile Include="Data\NexusScripts\RespawnScreen.cs" />
-    <Compile Include="Data\NexusScripts\ServerSpawnMessage.cs" />
-    <Compile Include="Data\NexusScripts\SpawnPad.cs" />
+    <Compile Include="Data\Scripts\GateVisuals.cs" />
+    <Compile Include="Data\Scripts\NexusAPI.cs" />
+    <Compile Include="Data\Scripts\Pad.cs" />
+    <Compile Include="Data\Scripts\RespawnScreen.cs" />
+    <Compile Include="Data\Scripts\ServerSpawnMessage.cs" />
+    <Compile Include="Data\Scripts\SpawnPad.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ProtoBuf.Net">
