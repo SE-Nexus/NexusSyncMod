@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <EntityComponents>
+    <EntityComponent xsi:type="MyObjectBuilder_ModStorageComponentDefinition">
+      <Id>
+        <TypeId>ModStorageComponent</TypeId>
+        <SubtypeId>SpawnpadConfigs</SubtypeId>
+      </Id>
+      <RegisteredStorageGuids>
+        <guid>9416E3EB-216D-493D-914D-98AA90E88FB1</guid>
+      </RegisteredStorageGuids>
+    </EntityComponent>
+  </EntityComponents>
+
+
+  <CubeBlocks>
+    <Definition xsi:type="MyObjectBuilder_ButtonPanelDefinition">
+      <Id>
+        <TypeId>ButtonPanel</TypeId>
+        <SubtypeId>SpawnPadSingle</SubtypeId>
+      </Id>
+      <DisplayName>Transporter</DisplayName>
+      <Description>Lets go on an andventure!</Description>
+      <Icon>Textures\GUI\Icons\Transporter.dds</Icon>
+      <CubeSize>Large</CubeSize>
+      <BlockTopology>TriangleMesh</BlockTopology>
+      <Size x="1" y="1" z="1"/>
+      <ModelOffset x="0" y="0" z="0"/>
+      <Model>Models\Cubes\large\Transporter.mwm</Model>
+      <Components>
+        <Component Subtype="AdminKit" Count="1" />
+        <Component Subtype="Computer" Count="1" />
+        <Component Subtype="AdminKit" Count="1" />
+      </Components>
+      <CriticalComponent Subtype="Computer" Index="0" />
+      <MountPoints>
+        <MountPoint Side="Front" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00"/>
+        <MountPoint Side="Back" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00"/>
+        <MountPoint Side="Right" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00"/>
+        <MountPoint Side="Top" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00"/>
+        <MountPoint Side="Bottom" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00"/>
+      </MountPoints>
+      <BlockPairName>Transporter</BlockPairName>
+      <BuildTimeSeconds>8</BuildTimeSeconds>
+      <ResourceSinkGroup>Utility</ResourceSinkGroup>
+      <ButtonCount>1</ButtonCount>
+      <ScreenAreas>
+        <ScreenArea Name="CockpitScreen_01" DisplayName="Left" TextureResolution="256" ScreenWidth="4" ScreenHeight="3" />
+        <ScreenArea Name="CockpitScreen_02" DisplayName="Right" TextureResolution="256" ScreenWidth="4" ScreenHeight="3" />
+      </ScreenAreas>
+      <UnassignedButtonColor>
+        <X>0.34</X>
+        <Y>0.34</Y>
+        <Z>0.34</Z>
+        <W>0</W>
+      </UnassignedButtonColor>
+      <ButtonColors>
+        <Vector4>
+          <X>1</X>
+          <Y>1</Y>
+          <Z>0.3</Z>
+          <W>1</W>
+        </Vector4>
+
+      </ButtonColors>
+      <ButtonSymbols>
+        <string>Textures\GUI\Icons\buttons\IconSquareHighlight.dds</string>
+      </ButtonSymbols>
+      <DamageEffectName>Damage_Electrical_Damaged</DamageEffectName>
+      <DamagedSound>ParticleElectrical</DamagedSound>
+      <DestroyEffect>BlockDestroyedExplosion_Small</DestroyEffect>
+      <DestroySound>WepSmallWarheadExpl</DestroySound>
+      <PCU>5</PCU>
+      <IsAirTight>false</IsAirTight>
+    </Definition>
+
+    <!--
+    <Definition xsi:type="MyObjectBuilder_RadioAntennaDefinition">
+      <Id>
+        <TypeId>RadioAntenna</TypeId>
+        <SubtypeId>SpawnPadMulti</SubtypeId>
+      </Id>
+      <DisplayName>Multi Spawn Pad</DisplayName>
+      <Icon>Textures\GUI\Icons\TransporterPad.dds</Icon>
+      <CubeSize>Large</CubeSize>
+      <BlockTopology>TriangleMesh</BlockTopology>
+      <Size x="2" y="1" z="2" />
+      <ModelOffset x="0" y="0" z="0" />
+      <Model>Models\Cubes\Large\TransporterPad.mwm</Model>
+      <Components>
+        <Component Subtype="AdminKit" Count="1" />
+        <Component Subtype="Computer" Count="1" />
+        <Component Subtype="AdminKit" Count="1" />
+      </Components>
+      <CriticalComponent Subtype="AdminKit" Index="1" />
+      <MountPoints>
+        <MountPoint Side="Bottom" StartX="0" StartY="0" EndX="2" EndY="2" />
+        <MountPoint Side="Top" StartX="0" StartY="0" EndX="2" EndY="2" />
+      </MountPoints>
+      <BuildProgressModels>
+        <Model BuildPercentUpperBound="0.25" File="Models\Cubes\Large\TransporterPad_Cons1.mwm" />
+        <Model BuildPercentUpperBound="0.45" File="Models\Cubes\Large\TransporterPad_Cons2.mwm" />
+        <Model BuildPercentUpperBound="0.65" File="Models\Cubes\Large\TransporterPad_Cons3.mwm" />
+        <Model BuildPercentUpperBound="0.85" File="Models\Cubes\Large\TransporterPad_Cons4.mwm" />
+      </BuildProgressModels>
+      <BlockPairName>SpawnPadMulti</BlockPairName>
+      <EdgeType>Light</EdgeType>
+      <PrimarySound>Transporter</PrimarySound>
+      <BuildTimeSeconds>3.402823E+38</BuildTimeSeconds>
+      <DisassembleRatio>3.402823E+38</DisassembleRatio>
+      <DamageEffectId>214</DamageEffectId>
+      <DamagedSound>ParticleElectrical</DamagedSound>
+      <MaxBroadcastRadius>150</MaxBroadcastRadius>
+      <IsAirTight>false</IsAirTight>
+      <PCU>10</PCU>
+    </Definition>
+    
+    -->
+  </CubeBlocks>
+</Definitions>

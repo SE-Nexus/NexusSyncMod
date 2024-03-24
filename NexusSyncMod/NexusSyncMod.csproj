@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E066D27D-86A8-4E2B-937A-DCA30EA9FC7A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>NexusSyncMod</RootNamespace>
+    <AssemblyName>NexusSyncMod</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Models\Components_AdminKit.sbc" />
+    <None Include="Models\Cubes\Large\Transporter.mwm" />
+    <None Include="Models\Cubes\Large\TransporterJammer.mwm" />
+    <None Include="Models\Cubes\Large\TransporterJammer_Cons1.mwm" />
+    <None Include="Models\Cubes\Large\TransporterJammer_Cons2.mwm" />
+    <None Include="Models\Cubes\Large\TransporterJammer_Cons3.mwm" />
+    <None Include="Models\Cubes\Large\TransporterPad.mwm" />
+    <None Include="Models\Cubes\Large\TransporterPad_Cons1.mwm" />
+    <None Include="Models\Cubes\Large\TransporterPad_Cons2.mwm" />
+    <None Include="Models\Cubes\Large\TransporterPad_Cons3.mwm" />
+    <None Include="Models\Cubes\Large\TransporterPad_Cons4.mwm" />
+    <None Include="Models\Cubes\Small\TransporterPadSingle.mwm" />
+    <None Include="Models\Cubes\Small\TransporterPadSingle_Cons1.mwm" />
+    <None Include="Models\Cubes\Small\TransporterPadSingle_Cons2.mwm" />
+    <None Include="Models\p_subspace.sbc" />
+    <None Include="Models\Transporters_Cubeblocks.sbc" />
+    <None Include="Textures\Models\Cubes\psA69D.tmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\NexusScripts\GateVisuals.cs" />
+    <Compile Include="Data\NexusScripts\NexusAPI.cs" />
+    <Compile Include="Data\NexusScripts\Pad.cs" />
+    <Compile Include="Data\NexusScripts\RespawnScreen.cs" />
+    <Compile Include="Data\NexusScripts\ServerSpawnMessage.cs" />
+    <Compile Include="Data\NexusScripts\SpawnPad.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ProtoBuf.Net">
+      <HintPath>..\TorchBinaries\DedicatedServer64\ProtoBuf.Net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ProtoBuf.Net.Core">
+      <HintPath>..\TorchBinaries\DedicatedServer64\ProtoBuf.Net.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Sandbox.Common">
+      <HintPath>..\TorchBinaries\DedicatedServer64\Sandbox.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Sandbox.Game">
+      <HintPath>..\TorchBinaries\DedicatedServer64\Sandbox.Game.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SpaceEngineers.Game">
+      <HintPath>..\TorchBinaries\DedicatedServer64\SpaceEngineers.Game.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VRage">
+      <HintPath>..\TorchBinaries\DedicatedServer64\VRage.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VRage.Game">
+      <HintPath>..\TorchBinaries\DedicatedServer64\VRage.Game.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VRage.Library">
+      <HintPath>..\TorchBinaries\DedicatedServer64\VRage.Library.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VRage.Math">
+      <HintPath>..\TorchBinaries\DedicatedServer64\VRage.Math.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Textures\Custom\enenra\EmissiveSpectrumAtlas_add.dds" />
+    <Content Include="Textures\Custom\enenra\EmissiveSpectrumAtlas_cm.dds" />
+    <Content Include="Textures\Custom\enenra\EmissiveSpectrumAtlas_ng.dds" />
+    <Content Include="Textures\GUI\Icons\Teleport.dds" />
+    <Content Include="Textures\GUI\Icons\Transporter.dds" />
+    <Content Include="Textures\GUI\Icons\TransporterPad.dds" />
+    <Content Include="Textures\GUI\Icons\TransporterPadSingle.dds" />
+    <Content Include="Textures\Models\Cubes\Ntechlogo_add.dds" />
+    <Content Include="Textures\Models\Cubes\Ntechlogo_cm.dds" />
+    <Content Include="Textures\Models\Cubes\Ntechlogo_me.dds" />
+    <Content Include="Textures\Models\Cubes\Ntechlogo_ng.dds" />
+    <Content Include="Textures\Models\Cubes\UpgradeModules_add.dds" />
+    <Content Include="Textures\Models\Cubes\UpgradeModules_cm.dds" />
+    <Content Include="Textures\Models\Cubes\UpgradeModules_me.dds" />
+    <Content Include="Textures\Models\Cubes\UpgradeModules_ng.dds" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
