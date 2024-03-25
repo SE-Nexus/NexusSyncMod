@@ -5,13 +5,14 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E066D27D-86A8-4E2B-937A-DCA30EA9FC7A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>NexusSyncMod</RootNamespace>
     <AssemblyName>NexusSyncMod</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,7 +33,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <None Include="build.bat" />
     <None Include="Data\Components_AdminKit.sbc" />
     <None Include="Models\Cubes\Large\Transporter.mwm" />
     <None Include="Models\Cubes\Large\TransporterJammer.mwm" />
@@ -49,6 +54,7 @@
     <None Include="Models\Cubes\Small\TransporterPadSingle_Cons2.mwm" />
     <None Include="Data\p_subspace.sbc" />
     <None Include="Data\Transporters_Cubeblocks.sbc" />
+    <None Include="modinfo.sbmi" />
     <None Include="Textures\Models\Cubes\psA69D.tmp" />
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +105,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="metadata.mod" />
     <Content Include="Textures\Custom\enenra\EmissiveSpectrumAtlas_add.dds" />
     <Content Include="Textures\Custom\enenra\EmissiveSpectrumAtlas_cm.dds" />
     <Content Include="Textures\Custom\enenra\EmissiveSpectrumAtlas_ng.dds" />
@@ -116,4 +123,8 @@
     <Content Include="Textures\Models\Cubes\UpgradeModules_ng.dds" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>cd "$(ProjectDir)"
+build.bat "$(ProjectName)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
