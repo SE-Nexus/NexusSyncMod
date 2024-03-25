@@ -52,12 +52,12 @@
     <None Include="Textures\Models\Cubes\psA69D.tmp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Scripts\GateVisuals.cs" />
-    <Compile Include="Data\Scripts\NexusAPI.cs" />
-    <Compile Include="Data\Scripts\Pad.cs" />
-    <Compile Include="Data\Scripts\RespawnScreen.cs" />
-    <Compile Include="Data\Scripts\ServerSpawnMessage.cs" />
-    <Compile Include="Data\Scripts\SpawnPad.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\GateVisuals.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\NexusAPI.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Pad.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\RespawnScreen.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\ServerSpawnMessage.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\SpawnPad.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ProtoBuf.Net">

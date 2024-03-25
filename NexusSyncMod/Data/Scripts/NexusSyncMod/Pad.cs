@@ -67,7 +67,7 @@ namespace NexusSyncMod
             }
                 
 
-            Init();
+            //Init();
         }
 
         public override void Draw()
