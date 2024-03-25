@@ -1,5 +1,4 @@
-﻿
-using ProtoBuf;
+﻿using ProtoBuf;
 using Sandbox.Game;
 using Sandbox.Game.Entities;
 using Sandbox.Game.EntityComponents;
@@ -8,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using VRage.Game.Entity;
 using VRage.Game.ModAPI;
 using VRage.Utils;
