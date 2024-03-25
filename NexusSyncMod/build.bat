@@ -12,7 +12,7 @@ if exist Data (
 if exist Models (
 	robocopy Models "%output_folder%/Models" /s /purge /njh /njs /np
 )
-if exist Texures (
+if exist Textures (
 	robocopy Textures "%output_folder%/Textures" /s /purge /njh /njs /np
 )
 if exist Audio (
