@@ -1,4 +1,6 @@
-﻿using NexusSyncMod.CoreMod;
+﻿using NexusSyncMod.Gates;
+using NexusSyncMod.Respawn;
+using NexusSyncMod.SpawnPads;
 using Sandbox.Game.Entities;
 using Sandbox.ModAPI;
 using System.Collections.Generic;

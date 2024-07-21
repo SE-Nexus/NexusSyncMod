@@ -2,7 +2,7 @@
 using Sandbox.ModAPI;
 using System.Collections.Generic;
 
-namespace NexusSyncMod
+namespace NexusSyncMod.SpawnPads
 {
     [ProtoContract]
     public class ServerSpawnMessage

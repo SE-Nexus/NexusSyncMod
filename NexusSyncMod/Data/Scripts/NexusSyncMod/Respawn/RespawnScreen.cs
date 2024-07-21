@@ -1,5 +1,4 @@
-﻿using ProtoBuf;
-using Sandbox.Game.Entities;
+﻿using Sandbox.Game.Entities;
 using Sandbox.ModAPI;
 using System;
 using System.Collections.Generic;
@@ -7,9 +6,8 @@ using VRage.Game;
 using VRage.Game.Entity;
 using VRage.Game.ModAPI;
 using VRage.ModAPI;
-using VRage.Utils;
 
-namespace NexusSyncMod
+namespace NexusSyncMod.Respawn
 {
     public class RespawnScreen
     {
@@ -158,75 +156,5 @@ namespace NexusSyncMod
         }
 
 
-    }
-
-    [ProtoContract]
-    public class ServerMessage
-    {
-        [ProtoMember(1)]
-        public readonly ulong PlayerSteamID;
-
-        [ProtoMember(2)]
-        public readonly string ServerIP;
-
-        [ProtoMember(3)]
-        public readonly long MessageAuthentication;
-
-        [ProtoMember(4)]
-        public bool ClearRenderedGrids = false;
-
-        [ProtoMember(5)]
-        public RespawnOption[] Spawns;
-
-        [ProtoMember(6)]
-        public List<ClientGridBuilder> GridBuilders = new List<ClientGridBuilder>();
-
-        public ServerMessage(ulong SteamID, string Server, long Authentication)
-        {
-            PlayerSteamID = SteamID;
-            ServerIP = Server;
-            MessageAuthentication = Authentication;
-        }
-
-        public ServerMessage() { }
-    }
-
-    [ProtoContract]
-    public class RespawnOption
-    {
-        [ProtoMember(1)]
-        public long RespawnGridID;
-
-        [ProtoMember(2)]
-        public long RespawnBlockID;
-
-
-        public RespawnOption() { }
-    }
-
-    [ProtoContract]
-    public class ClientGridBuilder
-    {
-        [ProtoMember(1)]
-        public List<MyObjectBuilder_CubeGrid> Grids = new List<MyObjectBuilder_CubeGrid>();
-
-
-        public ClientGridBuilder() { }
-    }
-
-
-    public class Debug
-    {
-        private static bool EnableDebug = true;
-        public static void Write(string msg)
-        {
-            if (EnableDebug)
-            {
-                MyAPIGateway.Utilities.ShowMessage("NexusMOD", msg);
-                MyLog.Default.WriteLineAndConsole("NexusMOD: " + msg);
-
-
-            }
-        }
     }
 }

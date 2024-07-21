@@ -1,4 +1,4 @@
-﻿using ProtoBuf;
+﻿using NexusSyncMod.Nexus;
 using Sandbox.Game;
 using Sandbox.Game.Entities;
 using Sandbox.Game.EntityComponents;
@@ -13,7 +13,7 @@ using VRage.Game.ModAPI;
 using VRage.Utils;
 using VRageMath;
 
-namespace NexusSyncMod
+namespace NexusSyncMod.SpawnPads
 {
     public class SpawnPad
     {
@@ -24,7 +24,7 @@ namespace NexusSyncMod
         private static Guid StorageGUID = new Guid("9416E3EB-216D-493D-914D-98AA90E88FB1");
 
 
-        public enum SpawnType
+        private enum SpawnType
         {
             Single,
             Multi
@@ -551,81 +551,6 @@ namespace NexusSyncMod
             {
                 player.Character.Close();
             }
-        }
-
-    }
-
-
-    [ProtoContract]
-    public class SpawnPadConfigs
-    {
-
-        public string PrefabName;
-        public string ScriptName;
-        public int TargetServerID { get; set; } = 0;
-        public int MinPlayers { get; set; } = 0;
-        public int MaxPlayers { get; set; } = 0;
-
-        public int MaxSpawnsForPlayer { get; set; } = 0;
-        public double SpawnTimer { get; set; } = 0;
-
-        public MyPromoteLevel MinimumRole;
-        public string CustomData;
-
-        [ProtoMember(1)]
-        Dictionary<long, PlayerPadUse> PlayerUses = new Dictionary<long, PlayerPadUse>();
-
-        public PlayerPadUse GetPlayerFromPad(long Player)
-        {
-            if (PlayerUses.ContainsKey(Player))
-            {
-                return PlayerUses[Player];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-
-        public void AddPlayerUses(List<IMyPlayer> Players)
-        {
-
-            foreach (var Player in Players)
-            {
-
-                if (PlayerUses.ContainsKey(Player.IdentityId))
-                {
-                    PlayerUses[Player.IdentityId].Count++;
-                    PlayerUses[Player.IdentityId].LastUse = DateTime.Now;
-                }
-                else
-                {
-
-                    PlayerPadUse Use = new PlayerPadUse();
-                    PlayerUses.Add(Player.IdentityId, Use);
-                }
-            }
-        }
-
-
-
-        public SpawnPadConfigs() { }
-    }
-
-    [ProtoContract]
-    public class PlayerPadUse
-    {
-        [ProtoMember(1)]
-        public DateTime LastUse;
-
-        [ProtoMember(2)]
-        public int Count;
-
-        public PlayerPadUse()
-        {
-            LastUse = DateTime.Now;
-            Count = 1;
         }
 
     }

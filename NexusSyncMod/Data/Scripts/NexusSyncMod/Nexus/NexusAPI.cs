@@ -1,9 +1,8 @@
-﻿using ProtoBuf;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using VRage.Game;
 using VRageMath;
 
-namespace NexusSyncMod
+namespace NexusSyncMod.Nexus
 {
     public class NexusAPI
     {
@@ -158,117 +157,5 @@ namespace NexusSyncMod
 
 
 
-        public class Sector
-        {
-            public readonly string Name;
-
-            public readonly string IPAddress;
-
-            public readonly int Port;
-
-            public readonly bool IsGeneralSpace;
-
-            public readonly Vector3D Center;
-
-            public readonly double Radius;
-
-            public readonly int ServerID;
-
-            public Sector(string Name, string IPAddress, int Port, bool IsGeneralSpace, Vector3D Center, double Radius, int ServerID)
-            {
-                this.Name = Name;
-                this.IPAddress = IPAddress;
-                this.Port = Port;
-                this.IsGeneralSpace = IsGeneralSpace;
-                this.Center = Center;
-                this.Radius = Radius;
-                this.ServerID = ServerID;
-            }
-
-        }
-
-        public class Player
-        {
-
-            public readonly string PlayerName;
-
-            public readonly ulong SteamID;
-
-            public readonly long IdentityID;
-
-            public readonly int OnServer;
-
-            public Player(string PlayerName, ulong SteamID, long IdentityID, int OnServer)
-            {
-                this.PlayerName = PlayerName;
-                this.SteamID = SteamID;
-                this.IdentityID = IdentityID;
-                this.OnServer = OnServer;
-            }
-        }
-
-        public partial class Server
-        {
-            public readonly string Name;
-            public readonly int ServerID;
-            public readonly int ServerType;
-            public readonly string ServerIP;
-
-            public readonly int MaxPlayers;
-            public readonly float ServerSS;
-            public readonly int TotalGrids;
-            public readonly List<ulong> ReservedPlayers;
-
-            /*  Possible Server Types
-             * 
-             *  0 - SyncedSectored
-             *  1 - SyncedNon-Sectored
-             *  2 - Non-Synced & Non-Sectored
-             * 
-             */
-
-
-            public Server(string Name, int ServerID, int ServerType, string IP)
-            {
-                this.Name = Name;
-                this.ServerID = ServerID;
-                this.ServerType = ServerType;
-                this.ServerIP = IP;
-            }
-
-
-            //Online Server
-            public Server(string Name, int ServerID, int MaxPlayers, float SimSpeed, int TotalGrids, List<ulong> ReservedPlayers)
-            {
-                this.Name = Name;
-                this.ServerID = ServerID;
-                this.MaxPlayers = MaxPlayers;
-                this.ServerSS = SimSpeed;
-                this.TotalGrids = TotalGrids;
-                this.ReservedPlayers = ReservedPlayers;
-            }
-
-        }
-
-
-        [ProtoContract]
-        public class CrossServerMessage
-        {
-
-            [ProtoMember(1)] public readonly int ToServerID;
-            [ProtoMember(2)] public readonly int FromServerID;
-            [ProtoMember(3)] public readonly ushort UniqueMessageID;
-            [ProtoMember(4)] public readonly byte[] Message;
-
-            public CrossServerMessage(ushort UniqueMessageID, int ToServerID, int FromServerID, byte[] Message)
-            {
-                this.UniqueMessageID = UniqueMessageID;
-                this.ToServerID = ToServerID;
-                this.FromServerID = FromServerID;
-                this.Message = Message;
-            }
-
-            public CrossServerMessage() { }
-        }
     }
 }

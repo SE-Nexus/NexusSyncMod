@@ -62,12 +62,24 @@
     <None Include="Textures\Models\Cubes\psA69D.tmp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Scripts\NexusSyncMod\GateVisuals.cs" />
-    <Compile Include="Data\Scripts\NexusSyncMod\NexusAPI.cs" />
-    <Compile Include="Data\Scripts\NexusSyncMod\Pad.cs" />
-    <Compile Include="Data\Scripts\NexusSyncMod\RespawnScreen.cs" />
-    <Compile Include="Data\Scripts\NexusSyncMod\ServerSpawnMessage.cs" />
-    <Compile Include="Data\Scripts\NexusSyncMod\SpawnPad.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Debug.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Gates\GateVisual.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Gates\GateVisualData.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Gates\GateVisuals.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Nexus\CrossServerMessage.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Nexus\NexusAPI.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Nexus\Player.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Nexus\Sector.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Nexus\Server.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\ModCore.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Respawn\ClientGridBuilder.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Respawn\RespawnOption.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Respawn\RespawnScreen.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Respawn\ServerMessage.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\SpawnPads\ServerSpawnMessage.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\SpawnPads\PlayerPadUse.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\SpawnPads\SpawnPad.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\SpawnPads\SpawnPadConfigs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ProtoBuf.Net">

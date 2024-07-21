@@ -1,11 +1,10 @@
-﻿using ProtoBuf;
-using Sandbox.ModAPI;
+﻿using Sandbox.ModAPI;
 using System.Collections.Generic;
 using VRage.Game;
 using VRage.Utils;
 using VRageMath;
 
-namespace NexusSyncMod.CoreMod
+namespace NexusSyncMod.Gates
 {
     public static class GateVisuals
     {
@@ -159,54 +158,4 @@ namespace NexusSyncMod.CoreMod
             MyAPIGateway.Multiplayer.UnregisterSecureMessageHandler(GateNetID, MessageHandler);
         }
     }
-
-
-
-
-
-
-
-    [ProtoContract]
-    public class GateVisualData
-    {
-
-        [ProtoContract]
-        public class GateVisual
-        {
-            [ProtoMember(10)]
-            public Vector3D Center;
-
-            [ProtoMember(20)]
-            public Vector3D Direction;
-
-            [ProtoMember(40)]
-            public float Size = 800;
-
-            [ProtoMember(50)]
-            public string ParticleEffect;
-
-            public GateVisual(Vector3D Center, Vector3D Direction, string ParticleEffect, float Size = 800)
-            {
-                this.Center = Center;
-                this.Direction = Direction;
-                this.Size = Size;
-                this.ParticleEffect = ParticleEffect;
-            }
-
-            public GateVisual() { }
-
-        }
-
-        [ProtoMember(10)]
-        public List<GateVisual> AllGates = new List<GateVisual>();
-
-
-        public GateVisualData(List<GateVisual> Gates)
-        {
-            AllGates = Gates;
-        }
-
-        public GateVisualData() { }
-    }
-
 }
