@@ -5,15 +5,14 @@ namespace NexusSyncMod
 {
     public class Debug
     {
-        private static bool EnableDebug = true;
+        private const bool EnableDebug = true;
+
         public static void Write(string msg)
         {
             if (EnableDebug)
             {
                 MyAPIGateway.Utilities.ShowMessage("NexusMOD", msg);
                 MyLog.Default.WriteLineAndConsole("NexusMOD: " + msg);
-
-
             }
         }
     }

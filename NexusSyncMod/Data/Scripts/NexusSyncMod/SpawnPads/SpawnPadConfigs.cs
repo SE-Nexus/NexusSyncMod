@@ -24,11 +24,11 @@ namespace NexusSyncMod.SpawnPads
         [ProtoMember(1)]
         Dictionary<long, PlayerPadUse> PlayerUses = new Dictionary<long, PlayerPadUse>();
 
-        public PlayerPadUse GetPlayerFromPad(long Player)
+        public PlayerPadUse GetPlayerFromPad(long player)
         {
-            if (PlayerUses.ContainsKey(Player))
+            if (PlayerUses.ContainsKey(player))
             {
-                return PlayerUses[Player];
+                return PlayerUses[player];
             }
             else
             {
@@ -37,22 +37,21 @@ namespace NexusSyncMod.SpawnPads
         }
 
 
-        public void AddPlayerUses(List<IMyPlayer> Players)
+        public void AddPlayerUses(List<IMyPlayer> players)
         {
 
-            foreach (var Player in Players)
+            foreach (IMyPlayer player in players)
             {
-
-                if (PlayerUses.ContainsKey(Player.IdentityId))
+                PlayerPadUse use;
+                if(PlayerUses.TryGetValue(player.IdentityId, out use))
                 {
-                    PlayerUses[Player.IdentityId].Count++;
-                    PlayerUses[Player.IdentityId].LastUse = DateTime.Now;
+                    use.Count++;
+                    use.LastUse = DateTime.Now;
                 }
                 else
                 {
-
-                    PlayerPadUse Use = new PlayerPadUse();
-                    PlayerUses.Add(Player.IdentityId, Use);
+                    use = new PlayerPadUse();
+                    PlayerUses.Add(player.IdentityId, use);
                 }
             }
         }

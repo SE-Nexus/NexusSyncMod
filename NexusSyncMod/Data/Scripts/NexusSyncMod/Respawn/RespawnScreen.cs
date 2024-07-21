@@ -11,7 +11,7 @@ namespace NexusSyncMod.Respawn
 {
     public class RespawnScreen
     {
-        private bool _init = false;
+        //private bool _init = false;
         public const ushort NETWORK_ID = 2935;
 
         public List<IMyEntity> RenderedGrids = new List<IMyEntity>();
@@ -29,19 +29,19 @@ namespace NexusSyncMod.Respawn
 
         }
 
-        private void MessageHandler(ushort arg1, byte[] arg2, ulong arg3, bool arg4)
+        private void MessageHandler(ushort packetId, byte[] data, ulong senderId, bool fromServer)
         {
             try
             {
-                ServerMessage RecievedMessage = MyAPIGateway.Utilities.SerializeFromBinary<ServerMessage>(arg2);
-                IMyPlayer Client = MyAPIGateway.Session.LocalHumanPlayer;
-                ulong SteamId = Client.SteamUserId;
+                ServerMessage recievedMessage = MyAPIGateway.Utilities.SerializeFromBinary<ServerMessage>(data);
+                IMyPlayer lient = MyAPIGateway.Session.LocalHumanPlayer;
+                ulong steamId = lient.SteamUserId;
 
-                if (RecievedMessage.ClearRenderedGrids)
+                if (recievedMessage.ClearRenderedGrids)
                 {
-                    foreach (IMyEntity Grid in RenderedGrids)
+                    foreach (IMyEntity grid in RenderedGrids)
                     {
-                        Grid?.Close();
+                        grid?.Close();
                     }
 
                     RenderedGrids.Clear();
@@ -49,27 +49,27 @@ namespace NexusSyncMod.Respawn
                 }
 
 
-                if (RecievedMessage.PlayerSteamID == SteamId && RecievedMessage != null)
+                if (recievedMessage.PlayerSteamID == steamId && recievedMessage != null)
                 {
                     //Debug.Write("GridBuildersCountA: " + RecievedMessage.GridBuilders.Count);
 
-                    if (RecievedMessage.GridBuilders.Count == 0)
+                    if (recievedMessage.GridBuilders.Count == 0)
                         return;
 
 
 
-                    foreach (ClientGridBuilder Builder in RecievedMessage.GridBuilders)
+                    foreach (ClientGridBuilder builder in recievedMessage.GridBuilders)
                     {
-                        List<MyObjectBuilder_CubeGrid> TotalGrids = Builder.Grids;
+                        List<MyObjectBuilder_CubeGrid> totalGrids = builder.Grids;
                         //Debug.Write("TotalGrids: " + TotalGrids.Count);
 
-                        if (TotalGrids.Count == 0)
+                        if (totalGrids.Count == 0)
                             continue;
 
                         //MyEntities.RemapObjectBuilderCollection(TotalGrids);
-                        MaxGrids = TotalGrids.Count;
+                        MaxGrids = totalGrids.Count;
                         _spawned = new HashSet<IMyEntity>();
-                        foreach (MyObjectBuilder_CubeGrid grid in TotalGrids)
+                        foreach (MyObjectBuilder_CubeGrid grid in totalGrids)
                         {
                             //MyAPIGateway.Entities.RemapObjectBuilder(grid);
                             if (MyEntities.EntityExists(grid.EntityId))
@@ -128,7 +128,7 @@ namespace NexusSyncMod.Respawn
                     }
 
                 }
-                catch (Exception _)
+                catch (Exception)
                 {
                     //If we get an error, it could be caused by:
                     // 1. Corrupt/invalid grid
@@ -149,7 +149,7 @@ namespace NexusSyncMod.Respawn
             {
                 MyAPIGateway.Multiplayer.UnregisterSecureMessageHandler(NETWORK_ID, MessageHandler);
             }
-            catch (Exception a)
+            catch (Exception)
             {
                 //MyLog.Default.WriteLineAndConsole("Cannot remove event Handlers! Are they already removed?1" + a);
             }

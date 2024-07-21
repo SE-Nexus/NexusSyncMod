@@ -17,18 +17,18 @@ namespace NexusSyncMod
     [MySessionComponentDescriptor(MyUpdateOrder.AfterSimulation)]
     public class ModCore : MySessionComponentBase
     {
-        private bool IsServer { get { return MyAPIGateway.Multiplayer.IsServer; } }
+        private bool IsServer => MyAPIGateway.Multiplayer.IsServer;
+        private const int MaxTimer = 60;
 
-        private int MaxTimer = 60;
-        private int Counnter = 0;
+        private int counter = 0;
 
-        private List<string> AllSpawnTypes = new List<string>() {"SpawnPadMulti" };
+        private List<string> AllSpawnTypes = new List<string>() { "SpawnPadMulti" };
 
 
         private RespawnScreen PlayerScreen;
 
 
-        private Dictionary<MyEntity, SpawnPad> AllSpawnsInServer = new Dictionary<MyEntity, SpawnPad>();
+        private Dictionary<MyEntity, SpawnPad> allSpawnsInServer = new Dictionary<MyEntity, SpawnPad>();
 
         private void Init()
         {
@@ -40,15 +40,10 @@ namespace NexusSyncMod
         protected override void UnloadData()
         {
             if (PlayerScreen != null)
-            {
                 PlayerScreen.UnloadData();
-            }
 
             if (!IsServer)
-            {
                 GateVisuals.UnloadData();
-
-            }
         }
         
 
@@ -79,39 +74,39 @@ namespace NexusSyncMod
 
 
 
-        private void MyEntities_OnEntityRemove(VRage.Game.Entity.MyEntity obj)
+        private void MyEntities_OnEntityRemove(VRage.Game.Entity.MyEntity e)
         {
-            if (!(obj is IMyRadioAntenna))
+            if (!(e is IMyRadioAntenna))
                 return;
 
             //We only want blocks that match our blocks
-            IMyCubeBlock Block = (IMyCubeBlock)obj;
+            IMyCubeBlock Block = (IMyCubeBlock)e;
             string SubType = Block.BlockDefinition.SubtypeId;
             if (!AllSpawnTypes.Contains(SubType))
                 return;
 
-            if (AllSpawnsInServer.ContainsKey(obj))
-                AllSpawnsInServer.Remove(obj);
+            if (allSpawnsInServer.ContainsKey(e))
+                allSpawnsInServer.Remove(e);
 
 
             //TryShow("Removed SpawnPad block!");
 
         }
 
-        private void MyEntities_OnEntityCreate(VRage.Game.Entity.MyEntity obj)
+        private void MyEntities_OnEntityCreate(VRage.Game.Entity.MyEntity e)
         {
-            if (!(obj is IMyRadioAntenna))
+            if (!(e is IMyRadioAntenna))
                 return;
 
             //We only want blocks that match our blocks
-            IMyCubeBlock Block = (IMyCubeBlock)obj;
+            IMyCubeBlock Block = (IMyCubeBlock)e;
             string SubType = Block.BlockDefinition.SubtypeId;
 
             if (!AllSpawnTypes.Contains(SubType))
                 return;
 
 
-            AllSpawnsInServer.Add(obj, new SpawnPad(obj));
+            allSpawnsInServer.Add(e, new SpawnPad(e));
             //TryShow("Added SpawnPad block!");
         }
 
@@ -128,10 +123,10 @@ namespace NexusSyncMod
                 return;
 
 
-            if (Counnter <= MaxTimer)
+            if (counter <= MaxTimer)
             {
                 //TryShow($"Timer {Counnter}");
-                Counnter++;
+                counter++;
                 return;
             }
 
@@ -144,7 +139,7 @@ namespace NexusSyncMod
             }
 
 
-            Counnter = 0;
+            counter = 0;
         }
 
 
@@ -152,10 +147,8 @@ namespace NexusSyncMod
 
         private void Update1000Server()
         {
-            foreach (var Pad in AllSpawnsInServer)
-            {
-                Pad.Value.Update();
-            }
+            foreach (SpawnPad pad in allSpawnsInServer.Values)
+                pad.Update();
         }
 
         private void Update1000Client()

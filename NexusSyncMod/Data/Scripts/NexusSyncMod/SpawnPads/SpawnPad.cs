@@ -17,11 +17,11 @@ namespace NexusSyncMod.SpawnPads
 {
     public class SpawnPad
     {
-        private static string font = "White";
-        private static int DissapearTime = 1000 - 25;
-        private static int CountdownTimer = 3;
-        private static Regex RegCustomData = new Regex(":(.*)");
-        private static Guid StorageGUID = new Guid("9416E3EB-216D-493D-914D-98AA90E88FB1");
+        private const string Font = "White";
+        private const int DissapearTime = 1000 - 25;
+        private const int CountdownTimer = 3;
+        private static readonly Regex RegCustomData = new Regex(":(.*)");
+        private static readonly Guid StorageGUID = new Guid("9416E3EB-216D-493D-914D-98AA90E88FB1");
 
 
         private enum SpawnType
@@ -33,35 +33,35 @@ namespace NexusSyncMod.SpawnPads
         private SpawnType type;
         private MyEntity entity;
         private IMyCubeBlock block;
-        private IMyTerminalBlock TerminalBlock;
-        private IMyRadioAntenna RadioAnt;
+        private IMyTerminalBlock terminalBlock;
+        private IMyRadioAntenna radioAnt;
         private string subType;
-        private int CurrentTimer = 4;
+        private int currentTimer = 4;
 
-        public double MaxDistance = 1.5;
+        private double maxDistance = 1.5;
 
-        private SpawnPadConfigs Configs = new SpawnPadConfigs();
+        private SpawnPadConfigs configs = new SpawnPadConfigs();
 
-        private List<IMyPlayer> ContainedPlayers = new List<IMyPlayer>();
+        private List<IMyPlayer> containedPlayers = new List<IMyPlayer>();
 
 
         public SpawnPad(MyEntity entity)
         {
             block = (IMyCubeBlock)entity;
-            TerminalBlock = (IMyTerminalBlock)block;
-            RadioAnt = (IMyRadioAntenna)block;
+            terminalBlock = (IMyTerminalBlock)block;
+            radioAnt = (IMyRadioAntenna)block;
 
             subType = block.BlockDefinition.SubtypeId;
 
             if (subType == "SpawnPadSingle")
             {
                 type = SpawnType.Single;
-                MaxDistance = 1.5f;
+                maxDistance = 1.5f;
             }
             else if (subType == "SpawnPadMulti")
             {
                 type = SpawnType.Multi;
-                MaxDistance = 2.5;
+                maxDistance = 2.5;
             }
 
             this.entity = entity;
@@ -92,78 +92,78 @@ namespace NexusSyncMod.SpawnPads
 
         private IEnumerable<IMyCharacter> GetCharactersInBlock()
         {
-            Vector3D BlockPosition = block.PositionComp.GetPosition();
-            IEnumerable<IMyCharacter> Characters = MyEntities.GetEntities().OfType<IMyCharacter>();
+            Vector3D blockPosition = block.PositionComp.GetPosition();
+            IEnumerable<IMyCharacter> characters = MyEntities.GetEntities().OfType<IMyCharacter>();
 
-            foreach (var Character in Characters)
+            foreach (IMyCharacter character in characters)
             {
 
-                if (!Character.InScene || Character.IsBot || Character.IsDead || !Character.IsPlayer || string.IsNullOrEmpty(Character.DisplayName))
+                if (!character.InScene || character.IsBot || character.IsDead || !character.IsPlayer || string.IsNullOrEmpty(character.DisplayName))
                     continue;
 
-                if (Vector3D.Distance(Character.GetPosition(), BlockPosition) < MaxDistance)
-                    yield return (Character);
+                if (Vector3D.Distance(character.GetPosition(), blockPosition) < maxDistance)
+                    yield return (character);
             }
         }
 
         private void AccumulatePlayers()
         {
-            bool PassedNewTimerCheck = true;
+            bool passedNewTimerCheck = true;
 
             // Accumulate all players in the zone
-            List<IMyPlayer> _ContainedPlayers = new List<IMyPlayer>();
-            foreach (var Character in GetCharactersInBlock())
+            List<IMyPlayer> containedPlayers = new List<IMyPlayer>();
+            foreach (IMyCharacter character in GetCharactersInBlock())
             {
-                if (Character == null)
+                if (character == null)
                     continue;
 
-                IMyPlayer MyPlayer = MyAPIGateway.Players.GetPlayerControllingEntity(Character);
+                IMyPlayer myPlayer = MyAPIGateway.Players.GetPlayerControllingEntity(character);
 
-                if (MyPlayer == null)
+                if (myPlayer == null)
                     continue;
 
-                _ContainedPlayers.Add(MyPlayer);
+                containedPlayers.Add(myPlayer);
 
-                if (!ContainedPlayers.Contains(MyPlayer))
+                if (!this.containedPlayers.Contains(myPlayer))
                 {
                     //Reset the countdown timer if a new player joins
-                    ContainedPlayers.Add(MyPlayer);
-                    CurrentTimer = CountdownTimer;
-                    PassedNewTimerCheck = false;
+                    this.containedPlayers.Add(myPlayer);
+                    currentTimer = CountdownTimer;
+                    passedNewTimerCheck = false;
                     continue;
                 }
             }
 
-            if (_ContainedPlayers.Count == 0)
+            if (containedPlayers.Count == 0)
             {
-                ContainedPlayers.Clear();
+                this.containedPlayers.Clear();
                 return;
             }
 
 
             // Remove any players in the dictionary that no longer belong
-            for (int i = ContainedPlayers.Count - 1; i >= 0; i--)
+            for (int i = this.containedPlayers.Count - 1; i >= 0; i--)
             {
-                if (!_ContainedPlayers.Contains(ContainedPlayers[i]))
+                if (!containedPlayers.Contains(this.containedPlayers[i]))
                 {
                     // Reset the current timer if a player left
-                    CurrentTimer = CountdownTimer;
-                    PassedNewTimerCheck = false;
-                    ContainedPlayers.RemoveAt(i);
+                    currentTimer = CountdownTimer;
+                    passedNewTimerCheck = false;
+                    this.containedPlayers.RemoveAt(i);
                 }
             }
 
-            if (PassedNewTimerCheck)
-                CurrentTimer--;
+            if (passedNewTimerCheck)
+                currentTimer--;
         }
 
         private void CheckStatus()
         {
-            if (ContainedPlayers.Count == 0)
+            if (containedPlayers.Count == 0)
                 return;
 
             //Check to see if pad is enabled and working
-            if (!RadioAnt.Enabled || !RadioAnt.IsWorking)
+            if (!radioAnt.Enabled || !radioAnt.IsWorking)
             {
                 BroadcastMessage("SpawnPad is disabled or non-functional!");
                 return;
@@ -171,7 +171,7 @@ namespace NexusSyncMod.SpawnPads
 
 
             //Check to see if the target server is online
-            if (Configs.TargetServerID > 0 && !NexusAPI.IsServerOnline(Configs.TargetServerID))
+            if (configs.TargetServerID > 0 && !NexusAPI.IsServerOnline(configs.TargetServerID))
             {
                 BroadcastMessage("Target server is not online!");
                 return;
@@ -179,14 +179,14 @@ namespace NexusSyncMod.SpawnPads
 
 
             // Check to see if the target server has room
-            if (!HasRoom(Configs.TargetServerID))
+            if (!HasRoom(configs.TargetServerID))
                 return;
 
 
             // Begin checks for either single or multi spawn pad
             if (type == SpawnType.Single)
             {
-                if (ContainedPlayers.Count > 1)
+                if (containedPlayers.Count > 1)
                 {
                     BroadcastMessage("Only one player per pad!");
                     return;
@@ -194,15 +194,15 @@ namespace NexusSyncMod.SpawnPads
             }
             else if (type == SpawnType.Multi)
             {
-                if (Configs.MaxPlayers != 0 && ContainedPlayers.Count > Configs.MaxPlayers)
+                if (configs.MaxPlayers != 0 && containedPlayers.Count > configs.MaxPlayers)
                 {
-                    BroadcastMessage($"Max of {Configs.MaxPlayers} players on this pad!");
+                    BroadcastMessage($"Max of {configs.MaxPlayers} players on this pad!");
                     return;
                 }
 
-                if (Configs.MinPlayers != 0 && ContainedPlayers.Count < Configs.MinPlayers)
+                if (configs.MinPlayers != 0 && containedPlayers.Count < configs.MinPlayers)
                 {
-                    BroadcastMessage($"You need {Configs.MinPlayers - ContainedPlayers.Count} more players to use this pad!");
+                    BroadcastMessage($"You need {configs.MinPlayers - containedPlayers.Count} more players to use this pad!");
                     return;
                 }
             }
@@ -210,96 +210,68 @@ namespace NexusSyncMod.SpawnPads
             CheckSingleStatus();
         }
 
-        private bool HasRoom(int TargetServer)
+        private bool HasRoom(int targetServerId)
         {
 
-            if (TargetServer <= 0)
+            if (targetServerId <= 0)
                 return true;
 
-            var List = NexusAPI.GetAllOnlineServers();
+            int totalOnlinePlayers = NexusAPI.GetAllOnlinePlayers().Count(x => x.OnServer == targetServerId);
 
-            int TotalOnlinePlayers = 0;
-            foreach (var OnlinePlayer in NexusAPI.GetAllOnlinePlayers())
+            Server targetServer = NexusAPI.GetAllOnlineServers().FirstOrDefault(x => x.ServerID == targetServerId);
+            if (targetServer == null)
+                return false;
+
+
+            //Check max players
+            if (targetServer.MaxPlayers < totalOnlinePlayers + containedPlayers.Count)
             {
-                if (OnlinePlayer.OnServer == TargetServer)
-                    TotalOnlinePlayers++;
-            }
+                // Server is full, but the server can still fit the players if they are reserved
 
-
-            foreach (var Server in List)
-            {
-                if (Server.ServerID == TargetServer)
+                bool areReservedPlayers = containedPlayers.All(x => targetServer.ReservedPlayers.Contains(x.SteamUserId));
+                if(!areReservedPlayers)
                 {
-
-                    //Check max players
-                    if (Server.MaxPlayers < TotalOnlinePlayers + ContainedPlayers.Count)
-                    {
-                        //If its over the max playercount, lets check reserved player count
-
-                        bool Passed = true;
-                        foreach (var Player in ContainedPlayers)
-                        {
-                            if (!Server.ReservedPlayers.Contains(Player.SteamUserId))
-                            {
-                                //Lets not pass if one of the contained players is not on the reserved slots
-                                Passed = false;
-                                break;
-                            }
-                        }
-
-
-                        if (Passed)
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            BroadcastMessage("Target server is full");
-                        }
-
-                        return false;
-                    }
-
-
-                    return true;
+                    BroadcastMessage("Target server is full");
+                    return false;
                 }
             }
 
-            return false;
+
+            return true;
         }
 
 
         private void CheckSingleStatus()
         {
             //Check each players status in the configs
-            string Message = "";
-            bool PassedChecks = true;
+            string message = "";
+            bool passedChecks = true;
 
 
-            foreach (var Player in ContainedPlayers)
+            foreach (IMyPlayer player in containedPlayers)
             {
-                if (Player == null)
+                if (player == null)
                     continue;
 
-                PlayerPadUse Use = Configs.GetPlayerFromPad(Player.IdentityId);
+                PlayerPadUse use = configs.GetPlayerFromPad(player.IdentityId);
 
                
 
                 //Check spawn count limit
-                if (Use != null && Configs.MaxSpawnsForPlayer != 0 && Use.Count >= Configs.MaxSpawnsForPlayer)
+                if (use != null && configs.MaxSpawnsForPlayer != 0 && use.Count >= configs.MaxSpawnsForPlayer)
                 {
-                    Message = $"{Player.DisplayName} has reached their spawn limit!";
-                    PassedChecks = false;
+                    message = $"{player.DisplayName} has reached their spawn limit!";
+                    passedChecks = false;
                     break;
                 }
 
                 //Check each timer for individual players
-                if (Use != null && Configs.SpawnTimer != 0 && Use.LastUse + TimeSpan.FromMinutes(Configs.SpawnTimer) > DateTime.Now)
+                if (use != null && configs.SpawnTimer != 0 && use.LastUse + TimeSpan.FromMinutes(configs.SpawnTimer) > DateTime.Now)
                 {
 
-                    TimeSpan TimeLeft = DateTime.Now - (Use.LastUse + TimeSpan.FromMinutes(Configs.SpawnTimer));
-                    Message = $"{Player.DisplayName} has {TimeLeft.ToString(@"hh\:mm\:ss")} left until next spawn use!";
-                    PassedChecks = false;
+                    TimeSpan TimeLeft = DateTime.Now - (use.LastUse + TimeSpan.FromMinutes(configs.SpawnTimer));
+                    message = $"{player.DisplayName} has {TimeLeft.ToString(@"hh\:mm\:ss")} left until next spawn use!";
+                    passedChecks = false;
                     break;
                 }
 
@@ -318,14 +290,14 @@ namespace NexusSyncMod.SpawnPads
             }
 
             //If they didnt pass the checks, broadcast why and return
-            if (!PassedChecks)
+            if (!passedChecks)
             {
-                BroadcastMessage(Message);
+                BroadcastMessage(message);
                 return;
             }
 
             // If all players passed the checks, check the current timer status
-            if (CurrentTimer <= 0)
+            if (currentTimer <= 0)
             {
                 //If timer is less than or equal to 0, send all clients to server via spawn message
                 BeginSpawn();
@@ -334,7 +306,7 @@ namespace NexusSyncMod.SpawnPads
             {
                 //Display the current timer countdown
 
-                BroadcastMessage($"Spawning at {TerminalBlock.DisplayNameText} in {CurrentTimer}");
+                BroadcastMessage($"Spawning at {terminalBlock.DisplayNameText} in {currentTimer}");
             }
         }
 
@@ -343,24 +315,22 @@ namespace NexusSyncMod.SpawnPads
 
         private void BeginSpawn()
         {
-            List<ulong> AllSteamIDs = new List<ulong>();
-            foreach (var player in ContainedPlayers)
-            {
-                AllSteamIDs.Add(player.SteamUserId);
-            }
+            List<ulong> allSteamIDs = new List<ulong>();
+            foreach (IMyPlayer player in containedPlayers)
+                allSteamIDs.Add(player.SteamUserId);
 
-            ServerSpawnMessage Message = new ServerSpawnMessage();
-            Message.ToServerID = Configs.TargetServerID;
-            Message.ShipPrefabName = Configs.PrefabName;
-            Message.ScriptName = Configs.ScriptName;
-            Message.ContainedPlayers = AllSteamIDs;
-            Message.CustomData = Configs.CustomData;
+            ServerSpawnMessage message = new ServerSpawnMessage();
+            message.ToServerID = configs.TargetServerID;
+            message.ShipPrefabName = configs.PrefabName;
+            message.ScriptName = configs.ScriptName;
+            message.ContainedPlayers = allSteamIDs;
+            message.CustomData = configs.CustomData;
 
-            Configs.AddPlayerUses(ContainedPlayers);
+            configs.AddPlayerUses(containedPlayers);
 
-            Message.SendMessageToServer();
+            message.SendMessageToServer();
 
-            CurrentTimer = 5;
+            currentTimer = 5;
 
             SaveData();
             //CloseAllPlayers();
@@ -368,43 +338,41 @@ namespace NexusSyncMod.SpawnPads
 
 
 
-        private void BroadcastMessage(string Message)
+        private void BroadcastMessage(string message)
         {
-            foreach (var Player in ContainedPlayers)
+            foreach (IMyPlayer player in containedPlayers)
             {
-                if (Player == null)
-                {
+                if (player == null)
                     continue;
-                }
 
-                MyVisualScriptLogicProvider.ShowNotification(Message, DissapearTime, font, Player.IdentityId);
+                MyVisualScriptLogicProvider.ShowNotification(message, DissapearTime, Font, player.IdentityId);
             }
         }
 
         private void AddCustomDataConfigs()
         {
 
-            string CurrentData = TerminalBlock.CustomData;
-            int CurrentLineCount = CurrentData.Split(new[] { "\r\n", "\r", "\n", Environment.NewLine }, StringSplitOptions.None).Length;
+            string customData = terminalBlock.CustomData;
+            int customDataLines = customData.Split(new[] { "\r\n", "\r", "\n", Environment.NewLine }, StringSplitOptions.None).Length;
 
-            StringBuilder B = new StringBuilder();
-            B.AppendLine("PrefabName:");
-            B.AppendLine("ScriptName:");
-            B.AppendLine("ToServerID:1");
-            B.AppendLine("MinPlayers:0");
-            B.AppendLine("MaxPlayers:0");
-            B.AppendLine("MaxSpawnsForPlayer:0");
-            B.AppendLine("SpawnTimer (min):0");
-            B.AppendLine("MinRole:None");
-            B.AppendLine("CustomData:");
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine("PrefabName:");
+            builder.AppendLine("ScriptName:");
+            builder.AppendLine("ToServerID:1");
+            builder.AppendLine("MinPlayers:0");
+            builder.AppendLine("MaxPlayers:0");
+            builder.AppendLine("MaxSpawnsForPlayer:0");
+            builder.AppendLine("SpawnTimer (min):0");
+            builder.AppendLine("MinRole:None");
+            builder.AppendLine("CustomData:");
 
-            string TargetCustomData = B.ToString();
-            int TargetLineCount = TargetCustomData.Split(new[] { "\r\n", "\r", "\n", Environment.NewLine }, StringSplitOptions.None).Length;
+            string targetCustomData = builder.ToString();
+            int targetLineCount = targetCustomData.Split(new[] { "\r\n", "\r", "\n", Environment.NewLine }, StringSplitOptions.None).Length;
 
-            if (CurrentLineCount < TargetLineCount)
+            if (customDataLines < targetLineCount)
             {
                 //MyAPIGateway.Utilities?.ShowMessage("SyncMod", "Updating new customdata!");
-                TerminalBlock.CustomData = B.ToString();
+                terminalBlock.CustomData = targetCustomData;
             }
 
             GetCustomDataSettings();
@@ -414,12 +382,12 @@ namespace NexusSyncMod.SpawnPads
         {
             try
             {
-                MatchCollection Collection = RegCustomData.Matches(TerminalBlock.CustomData);
+                MatchCollection customDataMatches = RegCustomData.Matches(terminalBlock.CustomData);
 
                 //Make sure we have the collections we need
-                if (Collection.Count < 9)
+                if (customDataMatches.Count < 9)
                 {
-                    if (string.IsNullOrEmpty(TerminalBlock.CustomData))
+                    if (string.IsNullOrEmpty(terminalBlock.CustomData))
                         AddCustomDataConfigs();
 
                     //AddCustomDataConfigs();
@@ -427,30 +395,30 @@ namespace NexusSyncMod.SpawnPads
                 }
 
 
-                Configs.PrefabName = Collection[0].Groups[1].Value;
-                Configs.ScriptName = Collection[1].Groups[1].Value;
-                Configs.TargetServerID = TryParseInt(Collection[2].Groups[1].Value);
-                Configs.MinPlayers = TryParseInt(Collection[3].Groups[1].Value);
-                Configs.MaxPlayers = TryParseInt(Collection[4].Groups[1].Value);
+                configs.PrefabName = customDataMatches[0].Groups[1].Value;
+                configs.ScriptName = customDataMatches[1].Groups[1].Value;
+                configs.TargetServerID = TryParseInt(customDataMatches[2].Groups[1].Value);
+                configs.MinPlayers = TryParseInt(customDataMatches[3].Groups[1].Value);
+                configs.MaxPlayers = TryParseInt(customDataMatches[4].Groups[1].Value);
 
-                Configs.MaxSpawnsForPlayer = TryParseInt(Collection[5].Groups[1].Value);
-                Configs.SpawnTimer = TryParseDouble(Collection[6].Groups[1].Value);
+                configs.MaxSpawnsForPlayer = TryParseInt(customDataMatches[5].Groups[1].Value);
+                configs.SpawnTimer = TryParseDouble(customDataMatches[6].Groups[1].Value);
 
                 try
                 {
-                    Configs.MinimumRole = (MyPromoteLevel)Enum.Parse(typeof(MyPromoteLevel), Collection[7].Groups[1].Value);
+                    configs.MinimumRole = (MyPromoteLevel)Enum.Parse(typeof(MyPromoteLevel), customDataMatches[7].Groups[1].Value);
                 
                 }
-                catch (Exception _)
+                catch (Exception)
                 {
-                    Configs.MinimumRole = MyPromoteLevel.None;
-                    MyLog.Default?.WriteLineAndConsole($"NexusSyncMod: MyPromoteLevel: '{Collection[7].Groups[1].Value}' was not in correct format!");
+                    configs.MinimumRole = MyPromoteLevel.None;
+                    MyLog.Default?.WriteLineAndConsole($"NexusSyncMod: MyPromoteLevel: '{customDataMatches[7].Groups[1].Value}' was not in correct format!");
                 }
 
 
 
 
-                Configs.CustomData = Collection[8].Groups[1].Value;
+                configs.CustomData = customDataMatches[8].Groups[1].Value;
                 return true;
 
             }
@@ -462,53 +430,43 @@ namespace NexusSyncMod.SpawnPads
             return false;
         }
 
-        private int TryParseInt(string Input)
+        private int TryParseInt(string input)
         {
-            try
+            int result;
+            if(!int.TryParse(input, out result))
             {
-                int result = Int32.Parse(Input);
-                return result;
+                result = 0;
+                MyLog.Default?.WriteLineAndConsole($"NexusSyncMod: String '{input}' was not in correct format for int!");
             }
-            catch (Exception ex)
-            {
-                MyLog.Default?.WriteLineAndConsole($"NexusSyncMod: String '{Input}' was not in correct format for Int32!");
-                return 0;
-            }
-
+            return result;
         }
 
-        private double TryParseDouble(string Input)
+        private double TryParseDouble(string input)
         {
-            try
+            double result;
+            if (!double.TryParse(input, out result))
             {
-                double result = Double.Parse(Input);
-
-
-
-                return result;
+                result = 0;
+                MyLog.Default?.WriteLineAndConsole($"NexusSyncMod: String '{input}' was not in correct format for double!");
             }
-            catch (Exception ex)
-            {
-                MyLog.Default?.WriteLineAndConsole($"NexusSyncMod: String '{Input}' was not in correct format for Int32!");
-                return 0;
-            }
+            return result;
 
         }
 
         private bool LoadData()
         {
-            if (entity.Storage != null && entity.Storage.ContainsKey(StorageGUID))
+            string data;
+            if (entity.Storage != null && entity.Storage.TryGetValue(StorageGUID, out data))
             {
-                string Data = entity.Storage[StorageGUID];
-                byte[] SavedData = Convert.FromBase64String(Data);
+                byte[] savedData = Convert.FromBase64String(data);
 
                 try
                 {
-                    SpawnPadConfigs OldConfigs = MyAPIGateway.Utilities.SerializeFromBinary<SpawnPadConfigs>(SavedData);
-                    if (OldConfigs == null)
+                    SpawnPadConfigs oldConfigs = MyAPIGateway.Utilities.SerializeFromBinary<SpawnPadConfigs>(savedData);
+                    if (oldConfigs == null)
                         return true;
 
-                    Configs = OldConfigs;
+                    configs = oldConfigs;
                     //MyAPIGateway.Utilities?.ShowMessage("SyncMod", "Loading old configs!");
                     return true;
 
@@ -526,31 +484,20 @@ namespace NexusSyncMod.SpawnPads
 
         public void SaveData()
         {
-            if (entity.Storage != null)
-            {
-                var newByteData = MyAPIGateway.Utilities.SerializeToBinary(Configs);
-                var base64string = Convert.ToBase64String(newByteData);
-                entity.Storage[StorageGUID] = base64string;
-                //MyVisualScriptLogicProvider.ShowNotification("Data Saved", 2000);
-            }
-            else
-            {
+            if (entity.Storage == null)
                 entity.Storage = new MyModStorageComponent();
 
-                var newByteData = MyAPIGateway.Utilities.SerializeToBinary(Configs);
-                var base64string = Convert.ToBase64String(newByteData);
-                entity.Storage[StorageGUID] = base64string;
-            }
+            byte[] newByteData = MyAPIGateway.Utilities.SerializeToBinary(configs);
+            string base64string = Convert.ToBase64String(newByteData);
+            entity.Storage[StorageGUID] = base64string;
 
             //MyAPIGateway.Utilities?.ShowMessage("SyncMod", "Saving data!");
         }
 
         private void CloseAllPlayers()
         {
-            foreach (var player in ContainedPlayers)
-            {
+            foreach (IMyPlayer player in containedPlayers)
                 player.Character.Close();
-            }
         }
 
     }
