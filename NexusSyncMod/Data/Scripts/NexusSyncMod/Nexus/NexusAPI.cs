@@ -80,7 +80,7 @@ namespace NexusSyncMod.Nexus
             List<object[]> Objs = GetSectorsObject();
 
             List<Sector> Sectors = new List<Sector>();
-            foreach (var obj in Objs)
+            foreach (object[] obj in Objs)
             {
                 Sectors.Add(new Sector((string)obj[0], (string)obj[1], (int)obj[2], (bool)obj[3], (Vector3D)obj[4], (double)obj[5], (int)obj[6]));
             }
@@ -99,7 +99,7 @@ namespace NexusSyncMod.Nexus
             List<object[]> Objs = GetAllOnlinePlayersObject();
 
             List<Player> Players = new List<Player>();
-            foreach (var obj in Objs)
+            foreach (object[] obj in Objs)
             {
                 Players.Add(new Player((string)obj[0], (ulong)obj[1], (long)obj[2], (int)obj[3]));
             }
@@ -112,7 +112,7 @@ namespace NexusSyncMod.Nexus
             List<object[]> Objs = GetAllServersObject();
 
             List<Server> Servers = new List<Server>();
-            foreach (var obj in Objs)
+            foreach (object[] obj in Objs)
             {
                 Servers.Add(new Server((string)obj[0], (int)obj[1], (int)obj[2], (string)obj[3]));
             }
@@ -123,7 +123,7 @@ namespace NexusSyncMod.Nexus
             List<object[]> Objs = GetAllOnlineServersObject();
 
             List<Server> Servers = new List<Server>();
-            foreach (var obj in Objs)
+            foreach (object[] obj in Objs)
             {
                 Servers.Add(new Server((string)obj[0], (int)obj[1], (int)obj[2], (float)obj[3], (int)obj[4], (List<ulong>)obj[5]));
             }

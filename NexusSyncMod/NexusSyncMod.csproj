@@ -59,7 +59,6 @@
     <None Include="Data\Transporters_Cubeblocks.sbc" />
     <None Include="modinfo.sbmi" />
     <None Include="packages.config" />
-    <None Include="Textures\Models\Cubes\psA69D.tmp" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Scripts\NexusSyncMod\Debug.cs" />

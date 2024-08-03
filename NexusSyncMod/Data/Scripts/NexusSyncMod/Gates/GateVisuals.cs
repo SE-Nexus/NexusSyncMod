@@ -11,10 +11,10 @@ namespace NexusSyncMod.Gates
         // The visual effects for the gates were designed by Klime for Nexus who did a fantastic job.
 
 
-        private static List<RotatingParticle> all_effects = new List<RotatingParticle>();
-        private static float preset_radius = 800; //radius in meters
-        const ushort GateNetID = 2937;
-        private static  int timer = 0;
+        private static readonly List<RotatingParticle> all_effects = new List<RotatingParticle>();
+
+        private const float preset_radius = 800; //radius in meters
+        private const ushort GateNetID = 2937;
 
         public class RotatingParticle
         {
@@ -40,22 +40,20 @@ namespace NexusSyncMod.Gates
             if (!MyAPIGateway.Session.IsServer)
             {
                 MyAPIGateway.Multiplayer.RegisterSecureMessageHandler(GateNetID, MessageHandler);
-
-                MyLog.Default?.WriteLineAndConsole($"GateSystem: Initilized");
-                // MyAPIGateway.Utilities.MessageEntered += Utilities_MessageEntered; // Chat messages in offline mode only (for debug)
+                Log.Info($"GateSystem: Initilized");
             }
         }
 
 
 
-        private static void MessageHandler(ushort arg1, byte[] arg2, ulong arg3, bool arg4)
+        private static void MessageHandler(ushort packetId, byte[] data, ulong senderId, bool fromServer)
         {
             //Server sends all gate particle effects
-            GateVisualData RecievedMessage = MyAPIGateway.Utilities.SerializeFromBinary<GateVisualData>(arg2);
+            GateVisualData recievedMessage = MyAPIGateway.Utilities.SerializeFromBinary<GateVisualData>(data);
 
-            MyLog.Default?.WriteLineAndConsole($"GateSystem: Recieved Message from server!");
+            Log.Debug($"GateSystem: Recieved Message from server!");
 
-            if (RecievedMessage == null)
+            if (recievedMessage == null)
                 return;
 
 
@@ -64,46 +62,38 @@ namespace NexusSyncMod.Gates
 
 
                 
-            foreach(var GateData in RecievedMessage.AllGates)
+            foreach(GateVisual gateData in recievedMessage.AllGates)
             {
 
-                string EffectName = GateData.ParticleEffect;
-                MatrixD Center_Matrix;
+                string effectName = gateData.ParticleEffect;
+                MatrixD centerMatrix;
 
-                Vector3D  forward = Vector3D.Cross(Vector3D.CalculatePerpendicularVector(-GateData.Direction), GateData.Direction);
-                //MatrixD.creeat
+                Vector3D forward = Vector3D.Cross(Vector3D.CalculatePerpendicularVector(-gateData.Direction), gateData.Direction);
 
                 
 
-                Center_Matrix = MatrixD.CreateWorld(GateData.Center, Vector3D.CalculatePerpendicularVector(GateData.Direction), -GateData.Direction); // MatrixD.CreateTranslation(GateData.Center);
+                centerMatrix = MatrixD.CreateWorld(gateData.Center, Vector3D.CalculatePerpendicularVector(gateData.Direction), -gateData.Direction); // MatrixD.CreateTranslation(GateData.Center);
 
              
                 //End effect should be smaller
-                if (EffectName.Contains("end"))
+                if (effectName.Contains("end"))
                 {
-                    GateData.Size = 160;
-                    Center_Matrix = MatrixD.CreateWorld(GateData.Center, Vector3D.CalculatePerpendicularVector(GateData.Direction), GateData.Direction); // MatrixD.CreateTranslation(GateData.Center);
+                    gateData.Size = 160;
+                    centerMatrix = MatrixD.CreateWorld(gateData.Center, Vector3D.CalculatePerpendicularVector(gateData.Direction), gateData.Direction); // MatrixD.CreateTranslation(GateData.Center);
                 }
 
                
 
              
-                MatrixD initial_matrix = Center_Matrix;
+                MatrixD initialMatrix = centerMatrix;
 
-                initial_matrix.Translation += initial_matrix.Right * preset_radius; //Offset to the right
-                Vector3D wm_pos = initial_matrix.Translation;
+                initialMatrix.Translation += initialMatrix.Right * preset_radius; //Offset to the right
+                Vector3D wm_pos = initialMatrix.Translation;
 
                 MyParticleEffect effect;
-
-
-
-                MyParticlesManager.TryCreateParticleEffect(EffectName, ref initial_matrix, ref wm_pos, uint.MaxValue, out effect);
-                if (effect != null)
-                {
-                    RotatingParticle rotating_particle = new RotatingParticle(effect, 0, initial_matrix, Center_Matrix, GateData.Size); // Create particle and add to list
-                    all_effects.Add(rotating_particle);
-                    //MyAPIGateway.Utilities.ShowNotification("Created Effect", 2000, "White");
-                }
+                MyParticlesManager.TryCreateParticleEffect(effectName, ref initialMatrix, ref wm_pos, uint.MaxValue, out effect);
+                if (effect != null) // Create particle and add to list
+                    all_effects.Add(new RotatingParticle(effect, 0, initialMatrix, centerMatrix, gateData.Size));
             }
         }
 
@@ -111,13 +101,13 @@ namespace NexusSyncMod.Gates
 
         private static void RemoveAllEffect()
         {
-            foreach (var rotating_particle in all_effects)
+            foreach (RotatingParticle rotating_particle in all_effects)
             {
                 rotating_particle.effect.Stop(true);
                 rotating_particle.effect.StopEmitting();
                 rotating_particle.effect.StopLights();
             }
-            MyAPIGateway.Utilities.ShowNotification("Removed all effects", 2000, "White");
+            //MyAPIGateway.Utilities.ShowNotification("Removed all effects", 2000, "White");
             all_effects.Clear();
         }
 
@@ -126,11 +116,9 @@ namespace NexusSyncMod.Gates
         public static void Draw()
         {
             if (MyAPIGateway.Utilities.IsDedicated) //Don't want particles on the DS
-            {
                 return;
-            }
 
-            foreach (var rotating_particle in all_effects)
+            foreach (RotatingParticle rotating_particle in all_effects)
             {
                 Vector3D angle = Vector3D.Rotate(rotating_particle.initial_matrix.Translation - rotating_particle.center_matrix.Translation,
                     MatrixD.CreateFromAxisAngle(rotating_particle.center_matrix.Up, rotating_particle.current_angle)); //Rotate the particle emitter every tick
@@ -148,7 +136,6 @@ namespace NexusSyncMod.Gates
 
 
             }
-            timer += 1;
         }
 
         public static void UnloadData()

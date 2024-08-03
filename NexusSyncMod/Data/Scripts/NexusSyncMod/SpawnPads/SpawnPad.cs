@@ -412,7 +412,7 @@ namespace NexusSyncMod.SpawnPads
                 catch (Exception)
                 {
                     configs.MinimumRole = MyPromoteLevel.None;
-                    MyLog.Default?.WriteLineAndConsole($"NexusSyncMod: MyPromoteLevel: '{customDataMatches[7].Groups[1].Value}' was not in correct format!");
+                    Log.Error($"MyPromoteLevel: '{customDataMatches[7].Groups[1].Value}' was not in correct format!");
                 }
 
 
@@ -422,9 +422,9 @@ namespace NexusSyncMod.SpawnPads
                 return true;
 
             }
-            catch (Exception Ex)
+            catch (Exception ex)
             {
-                MyLog.Default?.WriteLineAndConsole($"NexusSyncMod: {Ex.ToString()}");
+                Log.Error(ex.ToString());
             }
 
             return false;
@@ -436,7 +436,7 @@ namespace NexusSyncMod.SpawnPads
             if(!int.TryParse(input, out result))
             {
                 result = 0;
-                MyLog.Default?.WriteLineAndConsole($"NexusSyncMod: String '{input}' was not in correct format for int!");
+                Log.Error($"String '{input}' was not in correct format for int!");
             }
             return result;
         }
@@ -447,7 +447,7 @@ namespace NexusSyncMod.SpawnPads
             if (!double.TryParse(input, out result))
             {
                 result = 0;
-                MyLog.Default?.WriteLineAndConsole($"NexusSyncMod: String '{input}' was not in correct format for double!");
+                Log.Error($"String '{input}' was not in correct format for double!");
             }
             return result;
 
@@ -473,7 +473,7 @@ namespace NexusSyncMod.SpawnPads
                 }
                 catch (Exception Ex)
                 {
-                    MyLog.Default?.WriteLineAndConsole($"SyncMod: {Ex.ToString()}");
+                    Log.Error(Ex.ToString());
                     return false;
                 }
 

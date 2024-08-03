@@ -23,10 +23,8 @@ namespace NexusSyncMod.Respawn
 
         public RespawnScreen()
         {
-
-            Debug.Write("Initilizing Systems! Madeby: Casimir");
+            Log.Info("Initilizing Systems! Madeby: Casimir");
             MyAPIGateway.Multiplayer.RegisterSecureMessageHandler(NETWORK_ID, MessageHandler);
-
         }
 
         private void MessageHandler(ushort packetId, byte[] data, ulong senderId, bool fromServer)
@@ -40,9 +38,7 @@ namespace NexusSyncMod.Respawn
                 if (recievedMessage.ClearRenderedGrids)
                 {
                     foreach (IMyEntity grid in RenderedGrids)
-                    {
                         grid?.Close();
-                    }
 
                     RenderedGrids.Clear();
                     return;
@@ -73,9 +69,7 @@ namespace NexusSyncMod.Respawn
                         {
                             //MyAPIGateway.Entities.RemapObjectBuilder(grid);
                             if (MyEntities.EntityExists(grid.EntityId))
-                            {
                                 continue;
-                            }
 
 
                             MyAPIGateway.Entities.CreateFromObjectBuilderParallel(grid, false, Increment);
@@ -88,8 +82,7 @@ namespace NexusSyncMod.Respawn
             }
             catch (Exception ex)
             {
-
-                Debug.Write("Error durring message recieved! \n" + ex);
+                Log.Error("Error durring message recieved! \n" + ex);
             }
         }
 

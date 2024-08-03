@@ -157,14 +157,6 @@ namespace NexusSyncMod
         }
 
 
-
-        public static void TryShow(string message)
-        {
-
-            MyAPIGateway.Utilities?.ShowMessage("SyncMod", message);
-
-            MyLog.Default?.WriteLineAndConsole($"SyncMod: {message}");
-        }
     }
 
 }
