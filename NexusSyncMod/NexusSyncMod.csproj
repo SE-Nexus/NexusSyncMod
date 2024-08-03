@@ -61,10 +61,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Scripts\NexusSyncMod\Debug.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Gates\GateVisual.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Gates\GateVisualData.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Gates\GateVisuals.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Log.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Nexus\CrossServerMessage.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Nexus\NexusAPI.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Nexus\Player.cs" />
