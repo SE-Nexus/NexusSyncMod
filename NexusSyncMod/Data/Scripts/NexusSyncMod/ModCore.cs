@@ -11,39 +11,31 @@ using VRage.Utils;
 
 namespace NexusSyncMod
 {
-
-    //[MyEntityComponentDescriptor(typeof(MyObjectBuilder_RadioAntenna), true, new string[] { "SpawnPadSingle", "SpawnPadMulti" })]
     [MySessionComponentDescriptor(MyUpdateOrder.AfterSimulation)]
     public class ModCore : MySessionComponentBase
     {
         private bool IsServer => MyAPIGateway.Multiplayer.IsServer;
-        private const int MaxTimer = 60;
-
-        private int counter = 0;
-
-        private List<string> AllSpawnTypes = new List<string>() { "SpawnPadMulti" };
-
-
         private RespawnScreen PlayerScreen;
-
-        private void Init()
-        {
-            //TryShow("Attached Entity Events");
-        }
 
         protected override void UnloadData()
         {
+            if (IsServer)
+                return;
+
             if (PlayerScreen != null)
                 PlayerScreen.UnloadData();
 
-            if (!IsServer)
-                GateVisuals.UnloadData();
+
+            GateVisuals.UnloadData();
         }
-        
+
 
 
         public override void Init(MyObjectBuilder_SessionComponent sessionComponent)
         {
+            if (IsServer)
+                return;
+
             GateVisuals.Init();
             base.Init(sessionComponent);
         }
@@ -51,15 +43,12 @@ namespace NexusSyncMod
 
         public override void LoadData()
         {
-            if (!IsServer)
-            {
-                Log.Info("Starting Systems! Madeby: Casimir");
-                PlayerScreen = new RespawnScreen();
+            if (IsServer)
                 return;
-            }
-                
 
-            //Init();
+
+            Log.Info("Starting Systems! Madeby: Casimir");
+            PlayerScreen = new RespawnScreen();
         }
 
         public override void Draw()
@@ -71,50 +60,25 @@ namespace NexusSyncMod
 
         public override void UpdateBeforeSimulation()
         {
+            if (IsServer)
+                return;
+
             //TryShow("Added Cube block!");
             base.UpdateBeforeSimulation();
         }
 
         public override void UpdateAfterSimulation()
         {
+            if (IsServer)
+                return;
+
             //TryShow("Added Cube block!");
             if (MyAPIGateway.Session == null)
                 return;
 
 
-            if (counter <= MaxTimer)
-            {
-                //TryShow($"Timer {Counnter}");
-                counter++;
-                return;
-            }
-
-
-
-
-            if (IsServer)
-            {
-                Update1000Server();
-            }
-
-
-            counter = 0;
-        }
-
-
-
-
-        private void Update1000Server()
-        {
 
         }
-
-        private void Update1000Client()
-        {
-            //TryShow("Updating Pad Client");
-        }
-
-
     }
 
 }
