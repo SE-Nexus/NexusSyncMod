@@ -1,22 +1,32 @@
 ﻿using ProtoBuf;
-using System.Collections.Generic;
+using VRageMath;
 
 namespace NexusSyncMod.Gates
 {
     [ProtoContract]
     public class GateVisualData
     {
-
-
         [ProtoMember(10)]
-        public List<GateVisual> AllGates = new List<GateVisual>();
+        public Vector3D Center;
 
+        [ProtoMember(20)]
+        public Vector3D Direction;
 
-        public GateVisualData(List<GateVisual> Gates)
+        [ProtoMember(40)]
+        public float Size = 800;
+
+        [ProtoMember(50)]
+        public string ParticleEffect;
+
+        public GateVisualData(Vector3D Center, Vector3D Direction, string ParticleEffect, float Size = 800)
         {
-            AllGates = Gates;
+            this.Center = Center;
+            this.Direction = Direction;
+            this.Size = Size;
+            this.ParticleEffect = ParticleEffect;
         }
 
         public GateVisualData() { }
+
     }
 }

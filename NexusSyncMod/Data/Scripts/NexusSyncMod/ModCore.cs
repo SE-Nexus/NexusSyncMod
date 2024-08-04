@@ -1,6 +1,5 @@
 ﻿using NexusSyncMod.Gates;
 using NexusSyncMod.Respawn;
-using NexusSyncMod.SpawnPads;
 using Sandbox.Game.Entities;
 using Sandbox.ModAPI;
 using System.Collections.Generic;
@@ -27,13 +26,8 @@ namespace NexusSyncMod
 
         private RespawnScreen PlayerScreen;
 
-
-        private Dictionary<MyEntity, SpawnPad> allSpawnsInServer = new Dictionary<MyEntity, SpawnPad>();
-
         private void Init()
         {
-            MyEntities.OnEntityCreate += MyEntities_OnEntityCreate;
-            MyEntities.OnEntityRemove += MyEntities_OnEntityRemove;
             //TryShow("Attached Entity Events");
         }
 
@@ -59,6 +53,7 @@ namespace NexusSyncMod
         {
             if (!IsServer)
             {
+                Log.Info("Starting Systems! Madeby: Casimir");
                 PlayerScreen = new RespawnScreen();
                 return;
             }
@@ -73,42 +68,6 @@ namespace NexusSyncMod
         }
 
 
-
-        private void MyEntities_OnEntityRemove(VRage.Game.Entity.MyEntity e)
-        {
-            if (!(e is IMyRadioAntenna))
-                return;
-
-            //We only want blocks that match our blocks
-            IMyCubeBlock Block = (IMyCubeBlock)e;
-            string SubType = Block.BlockDefinition.SubtypeId;
-            if (!AllSpawnTypes.Contains(SubType))
-                return;
-
-            if (allSpawnsInServer.ContainsKey(e))
-                allSpawnsInServer.Remove(e);
-
-
-            //TryShow("Removed SpawnPad block!");
-
-        }
-
-        private void MyEntities_OnEntityCreate(VRage.Game.Entity.MyEntity e)
-        {
-            if (!(e is IMyRadioAntenna))
-                return;
-
-            //We only want blocks that match our blocks
-            IMyCubeBlock Block = (IMyCubeBlock)e;
-            string SubType = Block.BlockDefinition.SubtypeId;
-
-            if (!AllSpawnTypes.Contains(SubType))
-                return;
-
-
-            allSpawnsInServer.Add(e, new SpawnPad(e));
-            //TryShow("Added SpawnPad block!");
-        }
 
         public override void UpdateBeforeSimulation()
         {
@@ -147,8 +106,7 @@ namespace NexusSyncMod
 
         private void Update1000Server()
         {
-            foreach (SpawnPad pad in allSpawnsInServer.Values)
-                pad.Update();
+
         }
 
         private void Update1000Client()

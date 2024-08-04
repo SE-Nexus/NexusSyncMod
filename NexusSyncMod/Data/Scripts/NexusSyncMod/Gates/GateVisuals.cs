@@ -49,9 +49,9 @@ namespace NexusSyncMod.Gates
         private static void MessageHandler(ushort packetId, byte[] data, ulong senderId, bool fromServer)
         {
             //Server sends all gate particle effects
-            GateVisualData recievedMessage = MyAPIGateway.Utilities.SerializeFromBinary<GateVisualData>(data);
+            GateVisualMsg recievedMessage = MyAPIGateway.Utilities.SerializeFromBinary<GateVisualMsg>(data);
 
-            Log.Debug($"GateSystem: Recieved Message from server!");
+            Log.Debug($"GateSystem: Received Message from server!");
 
             if (recievedMessage == null)
                 return;
@@ -62,7 +62,7 @@ namespace NexusSyncMod.Gates
 
 
                 
-            foreach(GateVisual gateData in recievedMessage.AllGates)
+            foreach(GateVisualData gateData in recievedMessage.AllGates)
             {
 
                 string effectName = gateData.ParticleEffect;

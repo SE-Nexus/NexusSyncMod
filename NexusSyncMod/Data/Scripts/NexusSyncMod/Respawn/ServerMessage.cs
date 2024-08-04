@@ -18,9 +18,6 @@ namespace NexusSyncMod.Respawn
         [ProtoMember(4)]
         public bool ClearRenderedGrids = false;
 
-        [ProtoMember(5)]
-        public RespawnOption[] Spawns;
-
         [ProtoMember(6)]
         public List<ClientGridBuilder> GridBuilders = new List<ClientGridBuilder>();
 

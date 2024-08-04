@@ -11,7 +11,12 @@ namespace NexusSyncMod.Respawn
 {
     public class RespawnScreen
     {
-        //private bool _init = false;
+        /*  Handles Grids in the Respawn Screen from other servers
+         * 
+         * 
+         * 
+         */
+
         public const ushort NETWORK_ID = 2935;
 
         public List<IMyEntity> RenderedGrids = new List<IMyEntity>();
@@ -23,7 +28,6 @@ namespace NexusSyncMod.Respawn
 
         public RespawnScreen()
         {
-            Log.Info("Initilizing Systems! Madeby: Casimir");
             MyAPIGateway.Multiplayer.RegisterSecureMessageHandler(NETWORK_ID, MessageHandler);
         }
 
@@ -82,7 +86,7 @@ namespace NexusSyncMod.Respawn
             }
             catch (Exception ex)
             {
-                Log.Error("Error durring message recieved! \n" + ex);
+                Log.Error("Error during message received! \n" + ex);
             }
         }
 
