@@ -36,6 +36,10 @@ namespace NexusSyncMod
             if (IsServer)
                 return;
 
+
+
+
+
             GateVisuals.Init();
             base.Init(sessionComponent);
         }
