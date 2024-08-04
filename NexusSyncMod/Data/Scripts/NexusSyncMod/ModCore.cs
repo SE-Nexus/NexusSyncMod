@@ -16,18 +16,18 @@ namespace NexusSyncMod
     public class ModCore : MySessionComponentBase
     {
         private bool IsServer => MyAPIGateway.Multiplayer.IsServer;
-        private RespawnScreen PlayerScreen;
+        private RespawnScreen playerScreen = new RespawnScreen();
         private BorderRenderManager renderer = new BorderRenderManager();
+        private GateVisuals gateVisuals = new GateVisuals();
 
         protected override void UnloadData()
         {
             if (IsServer)
                 return;
 
-            if (PlayerScreen != null)
-                PlayerScreen.UnloadData();
+            playerScreen.UnloadData();
             renderer.Unload();
-            GateVisuals.UnloadData();
+            gateVisuals.UnloadData();
         }
 
 
@@ -37,7 +37,7 @@ namespace NexusSyncMod
             if (IsServer)
                 return;
 
-            GateVisuals.Init();
+            gateVisuals.Init();
             base.Init(sessionComponent);
         }
 
@@ -48,12 +48,12 @@ namespace NexusSyncMod
                 return;
 
             Log.Info("Starting Systems! Madeby: Casimir");
-            PlayerScreen = new RespawnScreen();
+            playerScreen = new RespawnScreen();
         }
 
         public override void Draw()
         {
-            GateVisuals.Draw();
+            gateVisuals.Draw();
             renderer.Draw();
         }
 

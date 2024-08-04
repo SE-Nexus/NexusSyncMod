@@ -25,8 +25,7 @@ namespace NexusSyncMod.Respawn
         private int MaxGrids = 0;
         private HashSet<IMyEntity> _spawned;
 
-
-        public RespawnScreen()
+        public void Init()
         {
             MyAPIGateway.Multiplayer.RegisterSecureMessageHandler(NETWORK_ID, MessageHandler);
         }

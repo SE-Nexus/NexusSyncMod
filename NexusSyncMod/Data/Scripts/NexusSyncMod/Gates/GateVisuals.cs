@@ -6,36 +6,17 @@ using VRageMath;
 
 namespace NexusSyncMod.Gates
 {
-    public static class GateVisuals
+    public class GateVisuals
     {
         // The visual effects for the gates were designed by Klime for Nexus who did a fantastic job.
 
 
-        private static readonly List<RotatingParticle> all_effects = new List<RotatingParticle>();
+        private readonly List<RotatingParticle> all_effects = new List<RotatingParticle>();
 
         private const float preset_radius = 800; //radius in meters
         private const ushort GateNetID = 2937;
 
-        public class RotatingParticle
-        {
-            public MyParticleEffect effect;
-            public float current_angle;
-            public MatrixD initial_matrix; //Initial position
-            public MatrixD center_matrix; //Center position to orbit around
-            public float radius;
-            public RotatingParticle(MyParticleEffect effect, float current_angle, MatrixD initial_matrix, MatrixD center_matrix, float radius)
-            {
-                this.effect = effect;
-                this.current_angle = current_angle;
-                this.initial_matrix = initial_matrix;
-                this.center_matrix = center_matrix;
-                this.radius = radius;
-            }
-        }
-
-
-
-        public static void Init()
+        public void Init()
         {
             if (!MyAPIGateway.Session.IsServer)
             {
@@ -46,7 +27,7 @@ namespace NexusSyncMod.Gates
 
 
 
-        private static void MessageHandler(ushort packetId, byte[] data, ulong senderId, bool fromServer)
+        private void MessageHandler(ushort packetId, byte[] data, ulong senderId, bool fromServer)
         {
             //Server sends all gate particle effects
             GateVisualMsg recievedMessage = MyAPIGateway.Utilities.SerializeFromBinary<GateVisualMsg>(data);
@@ -99,7 +80,7 @@ namespace NexusSyncMod.Gates
 
 
 
-        private static void RemoveAllEffect()
+        private void RemoveAllEffect()
         {
             foreach (RotatingParticle rotating_particle in all_effects)
             {
@@ -113,7 +94,7 @@ namespace NexusSyncMod.Gates
 
 
 
-        public static void Draw()
+        public void Draw()
         {
             if (MyAPIGateway.Utilities.IsDedicated) //Don't want particles on the DS
                 return;
@@ -138,11 +119,31 @@ namespace NexusSyncMod.Gates
             }
         }
 
-        public static void UnloadData()
+        public void UnloadData()
         {
             RemoveAllEffect();
 
             MyAPIGateway.Multiplayer.UnregisterSecureMessageHandler(GateNetID, MessageHandler);
+        }
+
+
+
+        private class RotatingParticle
+        {
+            public MyParticleEffect effect;
+            public float current_angle;
+            public MatrixD initial_matrix; //Initial position
+            public MatrixD center_matrix; //Center position to orbit around
+            public float radius;
+
+            public RotatingParticle(MyParticleEffect effect, float current_angle, MatrixD initial_matrix, MatrixD center_matrix, float radius)
+            {
+                this.effect = effect;
+                this.current_angle = current_angle;
+                this.initial_matrix = initial_matrix;
+                this.center_matrix = center_matrix;
+                this.radius = radius;
+            }
         }
     }
 }
