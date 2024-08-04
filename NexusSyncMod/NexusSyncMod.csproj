@@ -66,6 +66,17 @@
     <Compile Include="Data\Scripts\NexusSyncMod\Gates\GateVisuals.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Log.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\ModCore.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Render\BorderRenderManager.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Render\HudAPIv2.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Render\MathTools\Complex.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Render\MathTools\QuarticSolver.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Render\MathTools\VectorTools.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Render\RenderStatusHud.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Render\Shapes\BorderShape.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Render\Shapes\BorderTexture.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Render\Shapes\BoxBorder.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Render\Shapes\SphereBorder.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Render\Shapes\TorusBorder.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Respawn\ClientGridBuilder.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Respawn\RespawnScreen.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Respawn\ServerMessage.cs" />
@@ -100,6 +111,9 @@
       <HintPath>..\Bin64\VRage.Game.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="VRage.Input">
+      <HintPath>..\Bin64\VRage.Input.dll</HintPath>
+    </Reference>
     <Reference Include="VRage.Library">
       <HintPath>..\Bin64\VRage.Library.dll</HintPath>
       <Private>False</Private>
@@ -107,6 +121,9 @@
     <Reference Include="VRage.Math">
       <HintPath>..\Bin64\VRage.Math.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="VRage.Render">
+      <HintPath>..\Bin64\VRage.Render.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

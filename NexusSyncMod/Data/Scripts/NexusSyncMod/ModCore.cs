@@ -8,6 +8,7 @@ using VRage.Game.Components;
 using VRage.Game.Entity;
 using VRage.Game.ModAPI;
 using VRage.Utils;
+using NexusSyncMod.Render;
 
 namespace NexusSyncMod
 {
@@ -16,6 +17,7 @@ namespace NexusSyncMod
     {
         private bool IsServer => MyAPIGateway.Multiplayer.IsServer;
         private RespawnScreen PlayerScreen;
+        private BorderRenderManager renderer = new BorderRenderManager();
 
         protected override void UnloadData()
         {
@@ -24,8 +26,7 @@ namespace NexusSyncMod
 
             if (PlayerScreen != null)
                 PlayerScreen.UnloadData();
-
-
+            renderer.Unload();
             GateVisuals.UnloadData();
         }
 
@@ -35,10 +36,6 @@ namespace NexusSyncMod
         {
             if (IsServer)
                 return;
-
-
-
-
 
             GateVisuals.Init();
             base.Init(sessionComponent);
@@ -50,7 +47,6 @@ namespace NexusSyncMod
             if (IsServer)
                 return;
 
-
             Log.Info("Starting Systems! Madeby: Casimir");
             PlayerScreen = new RespawnScreen();
         }
@@ -58,8 +54,13 @@ namespace NexusSyncMod
         public override void Draw()
         {
             GateVisuals.Draw();
+            renderer.Draw();
         }
 
+        public override void BeforeStart()
+        {
+            renderer.Init();
+        }
 
 
         public override void UpdateBeforeSimulation()
