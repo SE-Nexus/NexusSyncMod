@@ -37,6 +37,7 @@ namespace NexusSyncMod
             if (IsServer)
                 return;
 
+            renderer.InitNetwork();
             gateVisuals.Init();
             base.Init(sessionComponent);
         }
@@ -59,7 +60,7 @@ namespace NexusSyncMod
 
         public override void BeforeStart()
         {
-            renderer.Init();
+            renderer.InitHud();
         }
 
 

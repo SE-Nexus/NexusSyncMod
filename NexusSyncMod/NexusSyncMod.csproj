@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\protobuf-net.BuildTools.3.2.33\build\protobuf-net.BuildTools.props" Condition="Exists('..\packages\protobuf-net.BuildTools.3.2.33\build\protobuf-net.BuildTools.props')" />
   <Import Project="..\packages\Mal.Mdk2.ModAnalyzers.2.1.9\build\Mal.MDK2.ModAnalyzers.props" Condition="Exists('..\packages\Mal.Mdk2.ModAnalyzers.2.1.9\build\Mal.MDK2.ModAnalyzers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -71,9 +72,11 @@
     <Compile Include="Data\Scripts\NexusSyncMod\Render\MathTools\Complex.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Render\MathTools\QuarticSolver.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Render\MathTools\VectorTools.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\NexusAPI\SectorBorderTexture.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\NexusAPI\SectorData.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\NexusAPI\SectorShapeEnum.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Render\RenderStatusHud.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Render\Shapes\BorderShape.cs" />
-    <Compile Include="Data\Scripts\NexusSyncMod\Render\Shapes\BorderTexture.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Render\Shapes\BoxBorder.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Render\Shapes\SphereBorder.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Render\Shapes\TorusBorder.cs" />
@@ -158,5 +161,6 @@ build.bat "$(ProjectName)"</PostBuildEvent>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Mal.Mdk2.ModAnalyzers.2.1.9\build\Mal.MDK2.ModAnalyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Mal.Mdk2.ModAnalyzers.2.1.9\build\Mal.MDK2.ModAnalyzers.props'))" />
+    <Error Condition="!Exists('..\packages\protobuf-net.BuildTools.3.2.33\build\protobuf-net.BuildTools.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\protobuf-net.BuildTools.3.2.33\build\protobuf-net.BuildTools.props'))" />
   </Target>
 </Project>

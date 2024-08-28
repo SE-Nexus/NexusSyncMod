@@ -1,6 +1,10 @@
 ﻿using Draygo.API;
+using NexusAPI.ConfigAPI;
+using NexusSyncMod.Gates;
 using NexusSyncMod.Render.Shapes;
+using ProtoBuf;
 using Sandbox.ModAPI;
+using System;
 using System.Collections.Generic;
 using VRage.ModAPI;
 using VRageMath;
@@ -10,6 +14,7 @@ namespace NexusSyncMod.Render
     internal class BorderRenderManager
     {
         private const string MaterialPrefix = "NexusBorder";
+        private const ushort BorderNetId = 2938;
         private const double MaxRaycastDistance = 10000;
 
         private readonly List<BorderShape> borders = new List<BorderShape>();
@@ -17,24 +22,56 @@ namespace NexusSyncMod.Render
         private HudAPIv2 hudApi;
         private RenderStatusHud statusHud;
 
-        public bool UpdateCameraPosition { get; set; } = true;
 
-        public void Add(BoundingSphereD sphere, Color color, BorderTexture texture, string name)
+        internal void InitNetwork()
         {
-            borders.Add(new SphereBorder(sphere, MaterialPrefix + texture, color, name));
+            if (!MyAPIGateway.Session.IsServer)
+                MyAPIGateway.Multiplayer.RegisterSecureMessageHandler(BorderNetId, MessageHandler);
         }
 
-        public void Add(BoundingBoxD box, Color color, BorderTexture texture, string name)
+        private void MessageHandler(ushort id, byte[] data, ulong sender, bool fromServer)
         {
-            borders.Add(new BoxBorder(box, MaterialPrefix + texture, color, name));
+            if (!fromServer)
+                return;
+
+            ClientSectorMessage receivedMessage = MyAPIGateway.Utilities.SerializeFromBinary<ClientSectorMessage>(data);
+
+            borders.Clear();
+
+            foreach(SectorData sector in receivedMessage.Sectors)
+            {
+                Vector3D position = new Vector3D(sector.X, sector.Y, sector.Z);
+                double size = sector.RadiusKM;
+                string texture = MaterialPrefix + sector.BorderTexture;
+                Color color = sector.BorderColor;
+                string name = sector.SectorName;
+
+                BorderShape border;
+                switch (sector.SectorShape)
+                {
+                    case SectorShapeEnum.Sphere:
+                        border = new SphereBorder(new BoundingSphereD(position, size), texture, color, name);
+                        break;
+                    case SectorShapeEnum.Cuboid:
+                        Vector3D max = new Vector3D(sector.DX, sector.DY, sector.DZ);
+                        Vector3D min = Vector3D.Min(position, max);
+                        max = Vector3D.Max(position, max);
+                        border = new BoxBorder(new BoundingBoxD(min, max), texture, color, name);
+                        break;
+                    case SectorShapeEnum.Torus:
+                        Vector3D up = new Vector3D(sector.DX, sector.DY, sector.DZ);
+                        double minorRadius = sector.RingRadiusKM * 1000;
+                        border = new TorusBorder(position, up, size, minorRadius, texture, color, name);
+                        break;
+                    default:
+                        continue;
+                }
+
+                borders.Add(border);
+            }
         }
 
-        public void Add(Vector3D center, Vector3D up, double majorRadius, double minorRadius, Color color, BorderTexture texture, string name)
-        {
-            borders.Add(new TorusBorder(center, up, majorRadius, minorRadius, MaterialPrefix + texture, color, name));
-        }
-
-        public void Init()
+        public void InitHud()
         {
             hudApi = new HudAPIv2(OnHudReady);
         }
@@ -43,6 +80,9 @@ namespace NexusSyncMod.Render
         {
             if (hudApi != null)
                 hudApi.Unload();
+
+            borders.Clear();
+            MyAPIGateway.Multiplayer.UnregisterSecureMessageHandler(BorderNetId, MessageHandler);
         }
 
         private void OnHudReady()
@@ -113,5 +153,19 @@ namespace NexusSyncMod.Render
             return MyAPIGateway.Session?.Player?.Controller?.ControlledEntity?.Entity;
         }
 
+
+        [ProtoContract]
+        private class ClientSectorMessage
+        {
+            [ProtoMember(1)]
+            public SectorData[] Sectors { get; set; }
+
+            public ClientSectorMessage() { }
+
+            public ClientSectorMessage(SectorData[] sectors)
+            {
+                Sectors = sectors;
+            }
+        }
     }
 }
