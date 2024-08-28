@@ -189,7 +189,6 @@ namespace NexusSyncMod.Render.Shapes
         */
         public override bool Raycast(RayD ray, out double distance)
         {
-            // TODO: Is the local space torus on the xy plane (around z axis)?
             Vector3D localPosition = VectorTools.WorldToLocalPosition(ray.Position, matrix.Translation, matrixTransposed);
             Vector3D localDirection = VectorTools.WorldToLocalDirection(ray.Direction, matrixTransposed);
 
