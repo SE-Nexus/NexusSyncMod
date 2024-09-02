@@ -59,6 +59,7 @@
     <None Include="Models\Cubes\Small\TransporterPadSingle_Cons2.mwm" />
     <None Include="Data\p_subspace.sbc" />
     <None Include="Data\Transporters_Cubeblocks.sbc" />
+    <None Include="modinfo.sbmi" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +131,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="metadata.mod" />
     <Content Include="Textures\Custom\enenra\EmissiveSpectrumAtlas_add.dds" />
     <Content Include="Textures\Custom\enenra\EmissiveSpectrumAtlas_cm.dds" />
     <Content Include="Textures\Custom\enenra\EmissiveSpectrumAtlas_ng.dds" />
