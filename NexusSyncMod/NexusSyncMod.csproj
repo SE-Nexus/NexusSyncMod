@@ -43,6 +43,7 @@
   <ItemGroup>
     <None Include="build.bat" />
     <None Include="Data\Components_AdminKit.sbc" />
+    <None Include="Data\TransparentMaterials.sbc" />
     <None Include="Models\Cubes\Large\Transporter.mwm" />
     <None Include="Models\Cubes\Large\TransporterJammer.mwm" />
     <None Include="Models\Cubes\Large\TransporterJammer_Cons1.mwm" />
