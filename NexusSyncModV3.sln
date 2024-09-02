@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NexusSyncMod", "NexusSyncMod\NexusSyncMod.csproj", "{E066D27D-86A8-4E2B-937A-DCA30EA9FC7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NexusSyncModV3", "NexusSyncMod\NexusSyncModV3.csproj", "{E066D27D-86A8-4E2B-937A-DCA30EA9FC7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
