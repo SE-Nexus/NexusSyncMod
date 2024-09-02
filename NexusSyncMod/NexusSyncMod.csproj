@@ -146,6 +146,9 @@
     <Content Include="Textures\Models\Cubes\UpgradeModules_cm.dds" />
     <Content Include="Textures\Models\Cubes\UpgradeModules_me.dds" />
     <Content Include="Textures\Models\Cubes\UpgradeModules_ng.dds" />
+    <Content Include="Textures\NexusBorderCircle.dds" />
+    <Content Include="Textures\NexusBorderCross.dds" />
+    <Content Include="Textures\NexusBorderHex.dds" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Mal.Mdk2.ModAnalyzers.2.1.9\analyzers\dotnet\cs\Mal.Mdk2.ModAnalyzers.dll" />
