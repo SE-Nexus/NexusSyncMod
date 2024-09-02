@@ -41,7 +41,7 @@ namespace NexusSyncMod.Render
             foreach(SectorData sector in receivedMessage.Sectors)
             {
                 Vector3D position = new Vector3D(sector.X, sector.Y, sector.Z);
-                double size = sector.RadiusKM;
+                double size = sector.RadiusKM * 1000;
                 string texture = MaterialPrefix + sector.BorderTexture;
                 Color color = sector.BorderColor;
                 string name = sector.SectorName;
