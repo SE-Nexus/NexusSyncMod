@@ -59,7 +59,7 @@ namespace NexusSyncMod.Gates
                 //End effect should be smaller
                 if (effectName.Contains("end"))
                 {
-                    gateData.Size = 160;
+                    
                     centerMatrix = MatrixD.CreateWorld(gateData.Center, Vector3D.CalculatePerpendicularVector(gateData.Direction), gateData.Direction); // MatrixD.CreateTranslation(GateData.Center);
                 }
 
@@ -73,8 +73,16 @@ namespace NexusSyncMod.Gates
 
                 MyParticleEffect effect;
                 MyParticlesManager.TryCreateParticleEffect(effectName, ref initialMatrix, ref wm_pos, uint.MaxValue, out effect);
-                if (effect != null) // Create particle and add to list
+                if (effect != null)
+                {
+                    effect.UserScale = gateData.Size / 500;
+                    effect.UserVelocityMultiplier = gateData.Size / 500;
+                    effect.UserRadiusMultiplier = VRageMath.MathHelper.Clamp(500 / gateData.Size, 1, 4);
+                    //effect.UserLifeMultiplier = Math.Min(Math.Max(gateData.Size / 500, 0.4f), 1);
+                    //effect.UserVelocityMultiplier = gateData.Size / 800;
+                    //effect.UserLifeMultiplier = gateData.Size / 800;
                     all_effects.Add(new RotatingParticle(effect, 0, initialMatrix, centerMatrix, gateData.Size));
+                }
             }
         }
 
