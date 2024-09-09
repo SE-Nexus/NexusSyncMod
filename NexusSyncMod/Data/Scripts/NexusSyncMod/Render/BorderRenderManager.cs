@@ -1,10 +1,7 @@
-﻿using Draygo.API;
-using NexusAPI.ConfigAPI;
-using NexusSyncMod.Gates;
+﻿using NexusAPI.ConfigAPI;
 using NexusSyncMod.Render.Shapes;
 using ProtoBuf;
 using Sandbox.ModAPI;
-using System;
 using System.Collections.Generic;
 using VRage.ModAPI;
 using VRageMath;
@@ -19,7 +16,6 @@ namespace NexusSyncMod.Render
 
         private readonly List<BorderShape> borders = new List<BorderShape>();
 
-        private HudAPIv2 hudApi;
         private RenderStatusHud statusHud;
 
 
@@ -27,6 +23,22 @@ namespace NexusSyncMod.Render
         {
             if (!MyAPIGateway.Session.IsServer)
                 MyAPIGateway.Multiplayer.RegisterSecureMessageHandler(BorderNetId, MessageHandler);
+
+            if (ModCore.DEBUG)
+            {
+                borders.Add(new SphereBorder(new BoundingSphereD(new Vector3D(100000, 0, 0), 2000),
+                    MaterialPrefix + "Circle", Color.White, "Sphere"));
+                borders.Add(new BoxBorder(new BoundingBoxD(
+                        new Vector3D(1000, 1200, 1400),
+                        new Vector3D(2600, 3000, 2800)),
+                    MaterialPrefix + "Cross", Color.White, "Box"));
+                borders.Add(new TorusBorder(
+                    new Vector3D(0, 0, 100000),
+                    new Vector3D(1, 1, 1).Normalized(),
+                    2000, 1000,
+                    MaterialPrefix + "Hex", Color.White, "Torus"));
+                Log.Info("Debug mode enabled");
+            }
         }
 
         private void MessageHandler(ushort id, byte[] data, ulong sender, bool fromServer)
@@ -71,21 +83,13 @@ namespace NexusSyncMod.Render
             }
         }
 
-        public void InitHud()
-        {
-            hudApi = new HudAPIv2(OnHudReady);
-        }
-
         public void Unload()
         {
-            if (hudApi != null)
-                hudApi.Unload();
-
             borders.Clear();
             MyAPIGateway.Multiplayer.UnregisterSecureMessageHandler(BorderNetId, MessageHandler);
         }
 
-        private void OnHudReady()
+        public void OnHudReady()
         {
             statusHud = new RenderStatusHud(Color.Red);
         }

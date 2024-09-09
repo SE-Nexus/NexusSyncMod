@@ -1,46 +1,37 @@
 ﻿using NexusSyncMod.Gates;
 using NexusSyncMod.Respawn;
-using Sandbox.Game.Entities;
 using Sandbox.ModAPI;
-using System.Collections.Generic;
 using VRage.Game;
 using VRage.Game.Components;
-using VRage.Game.Entity;
-using VRage.Game.ModAPI;
-using VRage.Utils;
 using NexusSyncMod.Render;
+using Draygo.API;
+using VRageMath;
 
 namespace NexusSyncMod
 {
     [MySessionComponentDescriptor(MyUpdateOrder.AfterSimulation)]
     public class ModCore : MySessionComponentBase
     {
-        private bool IsServer => MyAPIGateway.Multiplayer.IsServer;
+        public const bool DEBUG = false; 
+
+        private bool IsServer => DEBUG ? MyAPIGateway.Utilities.IsDedicated : MyAPIGateway.Session.IsServer;
         private RespawnScreen playerScreen = new RespawnScreen();
         private BorderRenderManager renderer = new BorderRenderManager();
         private GateVisuals gateVisuals = new GateVisuals();
+        private HudAPIv2 hudApi;
 
         protected override void UnloadData()
         {
             if (IsServer)
                 return;
 
+            if (hudApi != null)
+                hudApi.Unload();
+
             playerScreen.UnloadData();
             renderer.Unload();
             gateVisuals.UnloadData();
         }
-
-
-
-        public override void Init(MyObjectBuilder_SessionComponent sessionComponent)
-        {
-            if (IsServer)
-                return;
-
-
-            base.Init(sessionComponent);
-        }
-
 
         public override void LoadData()
         {
@@ -61,7 +52,12 @@ namespace NexusSyncMod
 
         public override void BeforeStart()
         {
-            renderer.InitHud();
+            hudApi = new HudAPIv2(OnHudReady);
+        }
+
+        public void OnHudReady()
+        {
+            renderer.OnHudReady();
         }
 
 
