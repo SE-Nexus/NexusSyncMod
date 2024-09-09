@@ -37,9 +37,7 @@ namespace NexusSyncMod
             if (IsServer)
                 return;
 
-            renderer.InitNetwork();
-            playerScreen.Init();
-            gateVisuals.Init();
+
             base.Init(sessionComponent);
         }
 
@@ -49,8 +47,10 @@ namespace NexusSyncMod
             if (IsServer)
                 return;
 
-            Log.Info("Starting Systems! Madeby: Casimir");
-            playerScreen = new RespawnScreen();
+            Log.Info("Server Running NexusV3...");
+            playerScreen.Init();
+            renderer.InitNetwork();
+            gateVisuals.Init();
         }
 
         public override void Draw()
