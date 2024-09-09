@@ -38,6 +38,7 @@ namespace NexusSyncMod
                 return;
 
             renderer.InitNetwork();
+            playerScreen.Init();
             gateVisuals.Init();
             base.Init(sessionComponent);
         }
