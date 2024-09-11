@@ -75,14 +75,20 @@ namespace NexusSyncMod.Players
 
             hudMsgText.Clear();
             hudMsgText.Append("Other online players:").AppendLine();
+            int added = 0;
             foreach(OnlineClientServer server in playerData.OnlineServers)
             {
                 foreach(OnlinePlayer player in server.Players)
                 {
                     if(!playerIds.Contains(player.SteamID))
+                    {
                         hudMsgText.Append(player.PlayerName).AppendLine();
+                        added++;
+                    }
                 }
             }
+            if(added <= 0)
+                hudMsgText.Clear();
         }
 
         public void InitHud()
