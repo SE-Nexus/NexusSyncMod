@@ -69,7 +69,7 @@
     <Compile Include="Data\Scripts\NexusSyncMod\Log.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\ModCore.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Render\BorderRenderManager.cs" />
-    <Compile Include="Data\Scripts\NexusSyncMod\Render\HudAPIv2.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\HudAPIv2.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Render\MathTools\Complex.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Render\MathTools\QuarticSolver.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Render\MathTools\VectorTools.cs" />
