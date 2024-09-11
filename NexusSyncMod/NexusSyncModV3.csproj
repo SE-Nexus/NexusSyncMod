@@ -68,6 +68,10 @@
     <Compile Include="Data\Scripts\NexusSyncMod\Gates\GateVisuals.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Log.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\ModCore.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Players\OnlineClientServer.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Players\OnlinePlayer.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Players\OnlinePlayerData.cs" />
+    <Compile Include="Data\Scripts\NexusSyncMod\Players\PlayersHud.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Render\BorderRenderManager.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\HudAPIv2.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Render\MathTools\Complex.cs" />
@@ -101,6 +105,9 @@
     <Reference Include="Sandbox.Game">
       <HintPath>..\Bin64\Sandbox.Game.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Sandbox.Graphics">
+      <HintPath>..\Bin64\Sandbox.Graphics.dll</HintPath>
     </Reference>
     <Reference Include="SpaceEngineers.Game">
       <HintPath>..\Bin64\SpaceEngineers.Game.dll</HintPath>

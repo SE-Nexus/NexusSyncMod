@@ -1,23 +1,23 @@
 ﻿using NexusSyncMod.Gates;
 using NexusSyncMod.Respawn;
 using Sandbox.ModAPI;
-using VRage.Game;
 using VRage.Game.Components;
 using NexusSyncMod.Render;
 using Draygo.API;
-using VRageMath;
+using NexusSyncMod.Players;
 
 namespace NexusSyncMod
 {
     [MySessionComponentDescriptor(MyUpdateOrder.AfterSimulation)]
     public class ModCore : MySessionComponentBase
     {
-        public const bool DEBUG = false; 
+        public const bool DEBUG = true; 
 
         private bool IsServer => DEBUG ? MyAPIGateway.Utilities.IsDedicated : MyAPIGateway.Session.IsServer;
-        private RespawnScreen playerScreen = new RespawnScreen();
+        private RespawnScreen respawnScreen = new RespawnScreen();
         private BorderRenderManager renderer = new BorderRenderManager();
         private GateVisuals gateVisuals = new GateVisuals();
+        private PlayersHud playersList = new PlayersHud();
         private HudAPIv2 hudApi;
 
         protected override void UnloadData()
@@ -28,9 +28,10 @@ namespace NexusSyncMod
             if (hudApi != null)
                 hudApi.Unload();
 
-            playerScreen.UnloadData();
+            respawnScreen.UnloadData();
             renderer.Unload();
             gateVisuals.UnloadData();
+            playersList.Unload();
         }
 
         public override void LoadData()
@@ -39,9 +40,10 @@ namespace NexusSyncMod
                 return;
 
             Log.Info("Server Running NexusV3...");
-            playerScreen.Init();
+            respawnScreen.Init();
             renderer.InitNetwork();
             gateVisuals.Init();
+            playersList.Init();
         }
 
         public override void Draw()
@@ -58,29 +60,16 @@ namespace NexusSyncMod
         public void OnHudReady()
         {
             renderer.OnHudReady();
+            playersList.InitHud();
         }
 
-
-        public override void UpdateBeforeSimulation()
-        {
-            if (IsServer)
-                return;
-
-            //TryShow("Added Cube block!");
-            base.UpdateBeforeSimulation();
-        }
 
         public override void UpdateAfterSimulation()
         {
             if (IsServer)
                 return;
 
-            //TryShow("Added Cube block!");
-            if (MyAPIGateway.Session == null)
-                return;
-
-
-
+            playersList.Update();
         }
     }
 
