@@ -13,7 +13,7 @@ namespace NexusSyncMod.Gates
         public Vector3D Direction;
 
         [ProtoMember(40)]
-        public float Size = 800;
+        public float Size;
 
         [ProtoMember(50)]
         public string ParticleEffect;

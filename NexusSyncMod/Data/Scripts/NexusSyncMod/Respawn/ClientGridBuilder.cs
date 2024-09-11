@@ -7,7 +7,7 @@ namespace NexusSyncMod.Respawn
     [ProtoContract]
     public class ClientGridBuilder
     {
-        [ProtoMember(1)]
+        [ProtoMember(1, IsRequired = true)]
         public List<MyObjectBuilder_CubeGrid> Grids = new List<MyObjectBuilder_CubeGrid>();
 
 

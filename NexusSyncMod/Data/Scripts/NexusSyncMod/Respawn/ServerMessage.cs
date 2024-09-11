@@ -18,7 +18,7 @@ namespace NexusSyncMod.Respawn
         [ProtoMember(4)]
         public bool ClearRenderedGrids = false;
 
-        [ProtoMember(6)]
+        [ProtoMember(6, IsRequired = true)]
         public List<ClientGridBuilder> GridBuilders = new List<ClientGridBuilder>();
 
         public ServerMessage(ulong SteamID, string Server, long Authentication)
