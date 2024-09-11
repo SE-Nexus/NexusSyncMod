@@ -11,7 +11,7 @@ namespace NexusSyncMod
     [MySessionComponentDescriptor(MyUpdateOrder.AfterSimulation)]
     public class ModCore : MySessionComponentBase
     {
-        public const bool DEBUG = true; 
+        public const bool DEBUG = false; 
 
         private bool IsServer => DEBUG ? MyAPIGateway.Utilities.IsDedicated : MyAPIGateway.Session.IsServer;
         private RespawnScreen respawnScreen = new RespawnScreen();
