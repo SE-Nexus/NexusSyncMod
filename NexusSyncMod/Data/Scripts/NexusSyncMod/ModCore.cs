@@ -71,7 +71,6 @@ namespace NexusSyncMod
             if (IsServer)
                 return;
 
-            playersList.Update();
         }
     }
 
