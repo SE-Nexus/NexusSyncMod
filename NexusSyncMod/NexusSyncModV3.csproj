@@ -68,7 +68,6 @@
     <Compile Include="Data\Scripts\NexusSyncMod\Gates\GateVisuals.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Log.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\ModCore.cs" />
-    <Compile Include="Data\Scripts\NexusSyncMod\Players\OnlineClientServer.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Players\OnlinePlayer.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Players\OnlinePlayerData.cs" />
     <Compile Include="Data\Scripts\NexusSyncMod\Players\PlayersHud.cs" />
