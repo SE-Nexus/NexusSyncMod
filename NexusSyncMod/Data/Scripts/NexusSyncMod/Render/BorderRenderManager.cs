@@ -37,7 +37,6 @@ namespace NexusSyncMod.Render
                     new Vector3D(1, 1, 1).Normalized(),
                     2000, 1000,
                     MaterialPrefix + "Hex", Color.White, "Torus"));
-                Log.Info("Debug mode enabled");
             }
         }
 

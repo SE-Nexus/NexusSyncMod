@@ -40,6 +40,8 @@ namespace NexusSyncMod
                 return;
 
             Log.Info("Server Running NexusV3...");
+            if(DEBUG)
+                Log.Info("Debug mode enabled");
             respawnScreen.Init();
             renderer.InitNetwork();
             gateVisuals.Init();

@@ -35,8 +35,6 @@ namespace NexusSyncMod.Players
             }
         }
 
-        private bool init;
-
         public void Init()
         {
             // Hack to bypass the whitelist (this event has an unsupported type)
@@ -51,16 +49,22 @@ namespace NexusSyncMod.Players
         private void MessageReceived(ushort id, byte[] data, ulong sender, bool fromServer)
         {
             if (!fromServer)
+            {
+                Log.Error("Received invalid players packet");
                 return;
+            }
 
 
             OnlinePlayerData playerData;
             try
             {
                 playerData = MyAPIGateway.Utilities.SerializeFromBinary<OnlinePlayerData>(data);
+                if (ModCore.DEBUG)
+                    MyAPIGateway.Utilities.ShowNotification($"Received {playerData?.OnlinePlayers?.Count ?? 0}", 1000);
             }
             catch
             {
+                Log.Error("Failed to parse OnlinePlayerData");
                 return;
             }
             UpdatePlayerList(playerData);
@@ -84,8 +88,11 @@ namespace NexusSyncMod.Players
                     added++;
                 }
             }
+
             if(added <= 0)
                 hudMsgText.Clear();
+            if(ModCore.DEBUG)
+                MyAPIGateway.Utilities.ShowNotification($"Added {added}", 1000);
         }
 
         public void InitHud()
@@ -98,34 +105,11 @@ namespace NexusSyncMod.Players
 
         public void Unload()
         {
-            if(onScreenAdded != null)
+            MyAPIGateway.Multiplayer.UnregisterSecureMessageHandler(SeamlessClientNetId, MessageReceived);
+            if (onScreenAdded != null)
             {
                 MyVisualScriptLogicProvider.ScreenAdded -= onScreenAdded;
                 MyVisualScriptLogicProvider.ScreenRemoved -= onScreenRemoved;
-            }
-        }
-
-        public void Update()
-        {
-            if (ModCore.DEBUG && !init)
-            {
-                init = true;
-                UpdatePlayerList(new OnlinePlayerData()
-                {
-                    /*OnlineServers = new List<OnlineClientServer>()
-                    {
-                        new OnlineClientServer()
-                        {
-                            Players = new List<OnlinePlayer>()
-                            {
-                                new OnlinePlayer("avaness", 76561198082681546, 28847760, 13),
-                                new OnlinePlayer("Casimir", 76561198045096439, 59452696, 13),
-                                new OnlinePlayer("BishyBash", 76561198045096431, 59452696, 13),
-                                new OnlinePlayer("VastMan", 76561198045096431, 59452696, 13),
-                            }
-                        }
-                    }*/
-                });
             }
         }
 
@@ -133,6 +117,8 @@ namespace NexusSyncMod.Players
         {
             if(screen == ScreenName)
                 Visible = true;
+            if(ModCore.DEBUG)
+                Log.Info(screen + " added");
         }
 
         public void OnScreenRemoved(string screen)
