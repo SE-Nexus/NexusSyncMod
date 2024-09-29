@@ -74,7 +74,7 @@ namespace NexusSyncMod.Players
             HashSet<ulong> playerIds = new HashSet<ulong>(players.Where(x => !x.IsBot).Select(x => x.SteamUserId));
 
             hudMsgText.Clear();
-            hudMsgText.Append("Other online players:").AppendLine();
+            hudMsgText.Append("Players in Cluster:").AppendLine();
             int added = 0;
             foreach (OnlinePlayer player in playerData.OnlinePlayers)
             {
@@ -120,6 +120,8 @@ namespace NexusSyncMod.Players
                             {
                                 new OnlinePlayer("avaness", 76561198082681546, 28847760, 13),
                                 new OnlinePlayer("Casimir", 76561198045096439, 59452696, 13),
+                                new OnlinePlayer("BishyBash", 76561198045096431, 59452696, 13),
+                                new OnlinePlayer("VastMan", 76561198045096431, 59452696, 13),
                             }
                         }
                     }*/
