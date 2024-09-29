@@ -112,7 +112,7 @@ namespace NexusSyncMod.Players
                 init = true;
                 UpdatePlayerList(new OnlinePlayerData()
                 {
-                    OnlineServers = new List<OnlineClientServer>()
+                    /*OnlineServers = new List<OnlineClientServer>()
                     {
                         new OnlineClientServer()
                         {
@@ -122,7 +122,7 @@ namespace NexusSyncMod.Players
                                 new OnlinePlayer("Casimir", 76561198045096439, 59452696, 13),
                             }
                         }
-                    }
+                    }*/
                 });
             }
         }
