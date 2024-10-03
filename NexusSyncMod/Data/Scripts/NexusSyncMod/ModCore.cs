@@ -70,6 +70,8 @@ namespace NexusSyncMod
         {
             if (IsServer)
                 return;
+
+>>>>>>> 7854161e3ebf13f5ca53e453bc602c31223c6546
         }
     }
 

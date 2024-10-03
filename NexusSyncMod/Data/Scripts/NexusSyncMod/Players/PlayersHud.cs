@@ -29,15 +29,26 @@ namespace NexusSyncMod.Players
             }
             set 
             {
-                visible = value;
-                if (hudMsg != null)
-                    hudMsg.Visible = value;
+                if(visible != value)
+                {
+                    visible = value;
+                    if (hudMsg != null)
+                        hudMsg.Visible = value;
+                    if (ModCore.DEBUG)
+                        Log.Info("Players visible: " + value);
+                }
             }
         }
 
         public void Init()
         {
-            // Hack to bypass the whitelist (this event has an unsupported type)
+            // Method 1 to detect screens: 
+            // triggered when "control"? added/removed
+            MyAPIGateway.Gui.GuiControlCreated += Gui_GuiControlCreated;
+            MyAPIGateway.Gui.GuiControlRemoved += Gui_GuiControlRemoved;
+
+            // Method 2 to detect screens:
+            // MyVisualScriptLogicProvider events, inconsistent due to bug in multiplayer
             onScreenAdded = (o) => OnScreenAdded(o.GetType().Name);
             onScreenRemoved = (o) => OnScreenRemoved(o.GetType().Name);
             MyVisualScriptLogicProvider.ScreenAdded += onScreenAdded;
@@ -45,6 +56,7 @@ namespace NexusSyncMod.Players
 
             MyAPIGateway.Multiplayer.RegisterSecureMessageHandler(SeamlessClientNetId, MessageReceived);
         }
+
 
         private void MessageReceived(ushort id, byte[] data, ulong sender, bool fromServer)
         {
@@ -78,7 +90,7 @@ namespace NexusSyncMod.Players
             HashSet<ulong> playerIds = new HashSet<ulong>(players.Where(x => !x.IsBot).Select(x => x.SteamUserId));
 
             hudMsgText.Clear();
-            hudMsgText.Append("Players in Cluster:").AppendLine();
+            hudMsgText.Append("Other online players:").AppendLine();
             int added = 0;
             foreach (OnlinePlayer player in playerData.OnlinePlayers)
             {
@@ -111,14 +123,25 @@ namespace NexusSyncMod.Players
                 MyVisualScriptLogicProvider.ScreenAdded -= onScreenAdded;
                 MyVisualScriptLogicProvider.ScreenRemoved -= onScreenRemoved;
             }
+
+            MyAPIGateway.Gui.GuiControlCreated -= Gui_GuiControlCreated;
+            MyAPIGateway.Gui.GuiControlRemoved -= Gui_GuiControlRemoved;
+        }
+
+        private void Gui_GuiControlCreated(object obj)
+        {
+            OnScreenAdded(obj.GetType().Name);
+        }
+
+        private void Gui_GuiControlRemoved(object obj)
+        {
+            OnScreenRemoved(obj.GetType().Name);
         }
 
         private void OnScreenAdded(string screen)
         {
             if(screen == ScreenName)
                 Visible = true;
-            if(ModCore.DEBUG)
-                Log.Info(screen + " added");
         }
 
         public void OnScreenRemoved(string screen)
