@@ -1,10 +1,11 @@
-﻿using NexusSyncMod.Gates;
+﻿using Draygo.API;
+using NexusSyncMod.Data.Scripts.NexusSyncMod.Players;
+using NexusSyncMod.Gates;
+using NexusSyncMod.Players;
+using NexusSyncMod.Render;
 using NexusSyncMod.Respawn;
 using Sandbox.ModAPI;
 using VRage.Game.Components;
-using NexusSyncMod.Render;
-using Draygo.API;
-using NexusSyncMod.Players;
 
 namespace NexusSyncMod
 {
@@ -18,6 +19,7 @@ namespace NexusSyncMod
         private BorderRenderManager renderer = new BorderRenderManager();
         private GateVisuals gateVisuals = new GateVisuals();
         private PlayersHud playersList = new PlayersHud();
+        private PlayerStatusHud playerStatusHud = new PlayerStatusHud();
         private HudAPIv2 hudApi;
 
         protected override void UnloadData()
@@ -32,6 +34,7 @@ namespace NexusSyncMod
             renderer.Unload();
             gateVisuals.UnloadData();
             playersList.Unload();
+            playerStatusHud.Unload();
         }
 
         public override void LoadData()
@@ -46,6 +49,7 @@ namespace NexusSyncMod
             renderer.InitNetwork();
             gateVisuals.Init();
             playersList.Init();
+            playerStatusHud.Init();
         }
 
         public override void Draw()
@@ -63,6 +67,7 @@ namespace NexusSyncMod
         {
             renderer.OnHudReady();
             playersList.InitHud();
+            playerStatusHud.InitHud();
         }
 
 
