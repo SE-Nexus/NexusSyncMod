@@ -7,7 +7,7 @@
         <SubtypeId>AdminKit</SubtypeId>
       </Id>
       <DisplayName>AdminKit</DisplayName>
-      <Icon>Textures\GUI\construction_components_component.dds</Icon>
+      <Icon>Textures\GUI\Icons\component\construction_components_component.dds</Icon>
       <Size>
         <X>0.1</X>
         <Y>0.1</Y>

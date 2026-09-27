@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <Blueprints>
+
+        <Blueprint> <!-- This blueprint exists to prevent missing blueprint errors -->
+            <Id>
+                <TypeId>BlueprintDefinition</TypeId>
+                <SubtypeId>AdminKit</SubtypeId>
+            </Id>
+            <DisplayName>AdminKit</DisplayName>
+            <Icon>Textures\GUI\Icons\component\construction_components_component.dds</Icon>
+            <Prerequisites>
+                <Item Amount="1" TypeId="Component" SubtypeId="AdminKit" />
+            </Prerequisites>
+            <Result Amount="1" TypeId="Component" SubtypeId="AdminKit" />
+            <BaseProductionTimeInSeconds>1</BaseProductionTimeInSeconds>
+            <IsPrimary>true</IsPrimary>
+        </Blueprint>
+
+    </Blueprints>
+</Definitions>
